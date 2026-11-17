@@ -4,7 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
-<meta name="theme-color" content="#FFC917">
+<meta name="theme-color" content="#141414">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="首爾行程">
+<meta name="format-detection" content="telephone=no">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
 <title>首爾行程 11/19–11/23</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23FFC917'/%3E%3Crect x='4' y='4' width='24' height='24' fill='%23141414'/%3E%3Cpath fill='%23fff' d='M16 9l-1.4 1.4 4.6 4.6H9v2h10.2l-4.6 4.6L16 23l7-7z'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -28,8 +35,11 @@
   color-scheme:light;
 }
 *{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%;scroll-padding-top:120px}
-body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5;word-break:keep-all;overflow-wrap:anywhere;
+html{-webkit-text-size-adjust:100%;scroll-padding-top:120px;background:var(--ink);-webkit-tap-highlight-color:transparent}
+a,button,summary,label,input{touch-action:manipulation}
+/* Standalone iPhone app: keep an ink bar under the translucent status bar. */
+body::before{content:"";position:fixed;top:0;left:0;right:0;height:env(safe-area-inset-top);background:var(--ink);z-index:35}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5;overflow-wrap:anywhere;
   font-variant-numeric:tabular-nums;padding-bottom:calc(var(--nav-h) + env(safe-area-inset-bottom) + 24px)}
 ::selection{background:var(--ink);color:var(--sign)}
 :focus-visible{outline:3px solid var(--ink);outline-offset:2px}
@@ -42,13 +52,14 @@ button{font:inherit;color:inherit;cursor:pointer}
 .icon{width:24px;height:24px;fill:currentColor;flex:none}
 .icon.stroke{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:square}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-.wrap{max-width:720px;margin:0 auto;padding:0 16px}
+.wrap{max-width:720px;margin:0 auto;padding:0 16px;padding:0 max(16px,env(safe-area-inset-right)) 0 max(16px,env(safe-area-inset-left))}
 
 /* ---------- top strip + sign band ---------- */
 .strip{background:var(--ink);color:var(--white);font-size:13px}
+.strip{padding-top:env(safe-area-inset-top)}
 .strip .wrap{display:flex;justify-content:space-between;align-items:center;min-height:32px;padding-top:6px;padding-bottom:6px;gap:12px;white-space:nowrap}
 .strip b{color:var(--sign);font-weight:700}
-.band{position:sticky;top:0;z-index:20;background:var(--sign);border-bottom:3px solid var(--ink)}
+.band{position:sticky;top:env(safe-area-inset-top);z-index:20;background:var(--sign);border-bottom:3px solid var(--ink)}
 .band .wrap{display:grid;grid-template-columns:64px 1fr 48px;gap:16px;align-items:center;padding-top:16px;padding-bottom:16px}
 .pict{width:64px;height:64px;background:var(--ink);color:var(--white);display:grid;place-items:center}
 .pict .icon{width:40px;height:40px}
@@ -75,6 +86,8 @@ main{padding-top:32px}
 .view[hidden]{display:none}
 h2{font-size:28px;font-weight:900;line-height:1.15;margin:32px 0 12px;letter-spacing:-.01em}
 h2:first-child{margin-top:0}
+/* Titles break between words only; body prose wraps normally. */
+h2,h3,.stop .name,.checks .t,.route .end span,.tips b,.board .lbl{word-break:keep-all}
 h3{font-size:20px;font-weight:800;margin:24px 0 8px;line-height:1.25}
 p{margin:0 0 12px}
 .lead{font-size:15px;color:var(--ink-2);max-width:62ch}
@@ -133,8 +146,10 @@ p{margin:0 0 12px}
 .btn{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:8px 14px;border:2px solid var(--ink);background:var(--white);font-weight:700;font-size:15px;text-decoration:none;border-radius:0}
 .btn .icon{width:20px;height:20px}
 .btn.primary{background:var(--ink);color:var(--white)}
-.btn:hover{background:var(--sign)}.btn.primary:hover{background:#333}
-.btn:active{transform:translateY(1px)}
+@media (hover:hover){.btn:hover{background:var(--sign)}.btn.primary:hover{background:#333}}
+.btn:active{transform:translateY(1px);background:var(--sign)}.btn.primary:active{background:#333}
+.stop summary:active{background:var(--surface)}
+.days button:active,.nav button:active{opacity:.75}
 
 /* sign panels (flight / hotel) */
 .panel{background:var(--white);border:3px solid var(--ink);margin-bottom:16px}
@@ -154,7 +169,7 @@ dl.facts dt,dl.facts dd{margin:0;padding:10px 16px;border-bottom:1px solid #ddd}
 dl.facts dt{font-size:14px;color:var(--ink-3);white-space:nowrap}
 dl.facts dd{font-weight:500;text-align:right;overflow-wrap:anywhere}
 dl.facts dd.code{font-family:var(--mono);font-size:17px;letter-spacing:.06em}
-.copy{border:0;background:none;padding:0 0 0 8px;vertical-align:-5px;color:var(--ink-3)}
+.copy{border:0;background:none;padding:0;width:44px;height:44px;margin:-12px -12px -12px -4px;display:inline-grid;place-items:center;vertical-align:middle;color:var(--ink-3)}
 .copy .icon{width:18px;height:18px}
 .panel .foot{padding:12px 16px;font-size:14px;background:var(--surface)}
 .warnbox{background:var(--ink);color:var(--white);padding:14px 16px;margin:0 0 16px;display:flex;gap:12px;align-items:flex-start}
@@ -187,9 +202,10 @@ dl.facts dd.code{font-family:var(--mono);font-size:17px;letter-spacing:.06em}
 .conv .swap{display:flex;justify-content:center;padding:8px 0;color:var(--sign)}
 .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
 .chips button{background:none;border:2px solid var(--sign);color:var(--sign);padding:6px 12px;font-weight:700;min-height:40px}
-.chips button:hover{background:var(--sign);color:var(--ink)}
+@media (hover:hover){.chips button:hover{background:var(--sign);color:var(--ink)}}
+.chips button:active{background:var(--sign);color:var(--ink)}
 .rate{display:flex;align-items:center;gap:8px;margin-top:16px;font-size:14px;color:var(--on-dark-2);flex-wrap:wrap}
-.rate input{width:7em;font:500 15px var(--mono);border:2px solid var(--on-dark-2);background:var(--panel);color:var(--white);padding:4px 8px}
+.rate input{width:7em;font:500 16px var(--mono);border:2px solid var(--on-dark-2);background:var(--panel);color:var(--white);padding:4px 8px}
 .tips{list-style:none;margin:0;padding:0}
 .tips li{display:grid;grid-template-columns:40px 1fr;gap:12px;padding:12px 0;border-top:2px solid var(--ink)}
 .tips .pict{width:40px;height:40px}.tips .pict .icon{width:24px;height:24px}
@@ -209,7 +225,11 @@ dl.facts dd.code{font-family:var(--mono);font-size:17px;letter-spacing:.06em}
 /* taxi card dialog */
 dialog.taxi{border:0;padding:0;max-width:none;width:100%;height:100%;max-height:none;background:var(--sign);color:var(--ink)}
 dialog.taxi::backdrop{background:rgba(20,20,20,.6)}
-.taxi .in{min-height:100%;display:flex;flex-direction:column;justify-content:center;padding:24px;gap:24px}
+.taxi .in{min-height:100%;display:flex;flex-direction:column;justify-content:center;padding:24px;padding:max(24px,env(safe-area-inset-top)) max(24px,env(safe-area-inset-right)) max(24px,env(safe-area-inset-bottom)) max(24px,env(safe-area-inset-left));gap:24px}
+.a2hs{display:grid;grid-template-columns:24px 1fr auto;gap:12px;align-items:start;background:var(--white);border:2px solid var(--ink);padding:12px 14px;margin-top:16px}
+.a2hs[hidden]{display:none}
+.a2hs b{display:block}.a2hs span{font-size:14px;color:var(--ink-3)}
+.a2hs button{border:2px solid var(--ink);background:none;font-weight:700;min-height:44px;padding:0 12px}
 .taxi .big{font-size:clamp(32px,9vw,56px);font-weight:700;line-height:1.25}
 .taxi .addr{font-size:clamp(22px,6vw,34px);font-weight:700;background:var(--white);border:3px solid var(--ink);padding:16px}
 .toast{position:fixed;left:50%;bottom:calc(var(--nav-h) + 16px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--sign);padding:10px 16px;font-weight:700;opacity:0;pointer-events:none;transition:opacity .2s,transform .3s cubic-bezier(.16,1,.3,1);z-index:40}
@@ -225,9 +245,10 @@ dialog.taxi::backdrop{background:rgba(20,20,20,.6)}
   .wrap{max-width:1120px}
   #view-flight,#view-hotel,#view-todo,#view-money{max-width:720px;margin:0 auto}
   #view-trip:not([hidden]){display:grid;grid-template-columns:minmax(320px,380px) 1fr;column-gap:32px;align-items:start}
-  #view-trip .board{grid-column:1;grid-row:1 / span 3;position:sticky;top:112px}
-  #view-trip .days,#dayPanel,#view-trip>.note{grid-column:2}
-  #view-trip .days{margin-top:0}
+  #view-trip .board{grid-column:1;grid-row:1 / span 4;position:sticky;top:112px}
+  #view-trip .days,#dayPanel,#view-trip>.note,#view-trip .a2hs{grid-column:2}
+  #view-trip .days,#view-trip .a2hs{margin-top:0}
+  #view-trip .a2hs:not([hidden])+.days{margin-top:16px}
 }
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
@@ -278,6 +299,12 @@ dialog.taxi::backdrop{background:rgba(20,20,20,.6)}
   <div class="board" role="region" aria-labelledby="t-board">
     <h2 id="t-board">重要時刻</h2>
     <ol id="boardList"></ol>
+  </div>
+
+  <div class="a2hs" id="a2hs" hidden>
+    <svg class="icon"><use href="#i-info"/></svg>
+    <div><b>加到 iPhone 主畫面</b><span>在 Safari 按「分享」，選「加入主畫面」。之後像 App 一樣開啟，在地鐵沒訊號也能看。</span></div>
+    <button type="button" id="a2hsClose">知道了</button>
   </div>
 
   <div class="days" role="tablist" aria-label="選擇日期" id="dayTabs"></div>
@@ -651,6 +678,13 @@ function showView(v,push){
   if(push!==false)history.replaceState(null,"","#"+v);
 }
 document.querySelector(".nav").addEventListener("click",e=>{const b=e.target.closest("button[data-view]");if(!b)return;showView(b.dataset.view);window.scrollTo({top:0})});
+
+/* ---------- iPhone: home-screen hint + offline ---------- */
+const isIOS=/iPhone|iPad|iPod/.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
+const standalone=navigator.standalone===true||matchMedia("(display-mode: standalone)").matches;
+if(isIOS&&!standalone&&!store.get("a2hsDone",false))$("#a2hs").hidden=false;
+$("#a2hsClose").addEventListener("click",()=>{$("#a2hs").hidden=true;store.set("a2hsDone",true)});
+if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});
 
 /* ---------- boot ---------- */
 curDay=defaultDay();
