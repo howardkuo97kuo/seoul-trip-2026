@@ -1,0 +1,655 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#FFC917">
+<title>首爾行程 11/19–11/23</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23FFC917'/%3E%3Crect x='4' y='4' width='24' height='24' fill='%23141414'/%3E%3Cpath fill='%23fff' d='M16 9l-1.4 1.4 4.6 4.6H9v2h10.2l-4.6 4.6L16 23l7-7z'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Mono:wght@500&family=Fira+Sans:wght@400;500;700;800&family=Noto+Sans+KR:wght@500;700&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --sign:#FFC917;
+  --sign-deep:#F2B800;
+  --ink:#141414;
+  --panel:#1F1F1F;
+  --white:#FFFFFF;
+  --surface:#F4F1E6;
+  --ink-2:#3E3300;      /* secondary text on yellow, tinted from the ground */
+  --ink-3:#5A5A5A;      /* secondary text on white */
+  --on-dark-2:#C9C9C9;
+  --rule:#141414;
+  --ok:#1C7C3A;
+  --warn:#B3261E;
+  --sans:"Fira Sans","Noto Sans TC",system-ui,sans-serif;
+  --ko:"Noto Sans KR","Fira Sans",sans-serif;
+  --mono:"Fira Mono",ui-monospace,monospace;
+  --nav-h:64px;
+  --u:8px;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-padding-top:120px}
+body{margin:0;background:var(--sign);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5;word-break:keep-all;overflow-wrap:anywhere;
+  font-variant-numeric:tabular-nums;padding-bottom:calc(var(--nav-h) + env(safe-area-inset-bottom) + 24px)}
+::selection{background:var(--ink);color:var(--sign)}
+:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+.dark :focus-visible,.nav :focus-visible,.board :focus-visible{outline-color:var(--sign)}
+html{scrollbar-color:var(--ink) var(--sign-deep)}
+::-webkit-scrollbar{width:10px;height:10px}::-webkit-scrollbar-track{background:var(--sign-deep)}::-webkit-scrollbar-thumb{background:var(--ink)}
+a{color:inherit;text-underline-offset:3px;text-decoration-thickness:2px}
+button{font:inherit;color:inherit;cursor:pointer}
+[lang|="ko"],.ko{font-family:var(--ko)}
+.icon{width:24px;height:24px;fill:currentColor;flex:none}
+.icon.stroke{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:square}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.wrap{max-width:720px;margin:0 auto;padding:0 16px}
+
+/* ---------- top strip + sign band ---------- */
+.strip{background:var(--ink);color:var(--white);font-size:13px}
+.strip .wrap{display:flex;justify-content:space-between;align-items:center;min-height:32px;padding-top:6px;padding-bottom:6px;gap:12px;white-space:nowrap}
+.strip b{color:var(--sign);font-weight:700}
+.band{position:sticky;top:0;z-index:20;background:var(--sign);border-bottom:3px solid var(--ink)}
+.band .wrap{display:grid;grid-template-columns:64px 1fr 48px;gap:16px;align-items:center;padding-top:16px;padding-bottom:16px}
+.pict{width:64px;height:64px;background:var(--ink);color:var(--white);display:grid;place-items:center}
+.pict .icon{width:40px;height:40px}
+.msg{min-width:0;perspective:600px}
+.when{margin:0;font-size:14px;font-weight:700;color:var(--ink-2)}
+.what{margin:0;font-size:clamp(30px,8.5vw,60px);font-weight:900;line-height:1.05;letter-spacing:-.01em;word-break:keep-all;overflow-wrap:anywhere}
+.how{margin:6px 0 0;font-size:15px;font-weight:700;color:var(--ink)}
+.route-l{margin:2px 0 0;font-size:14px;font-weight:500;color:var(--ink-2)}
+.flip{transform-origin:50% 0;animation:flip .5s cubic-bezier(.16,1,.3,1) both}
+.msg>*:nth-child(2).flip{animation-delay:.06s}.msg>*:nth-child(3).flip{animation-delay:.12s}
+@keyframes flip{from{transform:rotateX(-80deg);opacity:.2}to{transform:none;opacity:1}}
+.edge{width:48px;height:64px;background:var(--ink);color:var(--white);display:grid;place-items:center;border:0;text-decoration:none}
+.edge .icon{width:32px;height:32px}
+.pin-note{display:flex;gap:8px;align-items:center;font-size:13px;font-weight:700;margin-top:6px}
+.pin-note[hidden]{display:none}
+.band.compact .wrap{grid-template-columns:44px 1fr 40px;padding-top:8px;padding-bottom:8px;gap:12px}
+.band.compact .pict{width:44px;height:44px}.band.compact .pict .icon{width:28px;height:28px}
+.band.compact .edge{width:40px;height:44px}.band.compact .edge .icon{width:24px;height:24px}
+.band.compact .what{font-size:22px}.band.compact .route-l,.band.compact .pin-note{display:none}
+.band.compact .how{font-size:12px;margin-top:2px}
+.pin-note button{background:none;border:2px solid var(--ink);padding:2px 10px;font-weight:700}
+
+/* ---------- views ---------- */
+main{padding-top:32px}
+.view[hidden]{display:none}
+h2{font-size:28px;font-weight:900;line-height:1.15;margin:32px 0 12px;letter-spacing:-.01em}
+h2:first-child{margin-top:0}
+h3{font-size:20px;font-weight:800;margin:24px 0 8px;line-height:1.25}
+p{margin:0 0 12px}
+.lead{font-size:15px;color:var(--ink-2);max-width:62ch}
+.note{font-size:13px;color:var(--ink-2)}
+
+/* departures board */
+.board{background:var(--ink);color:var(--sign);padding:12px 16px;font-family:var(--mono);font-size:14px}
+.board h2{font-family:var(--sans);color:var(--sign);font-size:20px;margin:0 0 8px}
+.board ol{list-style:none;margin:0;padding:0}
+.board .t{white-space:nowrap}
+.board li{display:grid;grid-template-columns:auto 1fr auto;gap:12px;padding:8px 0;border-top:1px solid #333;align-items:baseline;letter-spacing:.04em}
+.board li:first-child{border-top:0}
+.board .t{color:var(--sign)}
+.board .s{font:700 12px var(--sans);letter-spacing:0;padding:1px 6px;border:1px solid currentColor;white-space:nowrap}
+.board .s.soon{background:var(--sign);color:var(--ink);border-color:var(--sign)}
+.board .s.past{color:#8a8a8a}
+.board li.past{color:#8a8a8a}.board li.past .t{color:#8a8a8a}
+.board .lbl{font-family:var(--mono);letter-spacing:.02em}
+
+/* day tabs */
+.days{display:grid;grid-template-columns:repeat(5,1fr);margin:24px 0 0;border:3px solid var(--ink);background:var(--ink);gap:3px}
+.days button{background:var(--sign);border:0;padding:8px 2px;text-align:center;min-height:64px}
+.days b{display:block;font-size:24px;font-weight:800;line-height:1.1}
+.days span{font-size:12px;font-weight:500}
+.days button[aria-selected="true"]{background:var(--ink);color:var(--sign)}
+.days button.today:not([aria-selected="true"]) b{text-decoration:underline;text-underline-offset:4px}
+.dayhead{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin:24px 0 12px}
+.dayhead h2{margin:0}
+.dayhead .tag{font-size:13px;font-weight:700;white-space:nowrap;background:var(--ink);color:var(--sign);padding:2px 8px}
+
+/* stop chain */
+.chain{list-style:none;margin:0;padding:0;position:relative}
+.stop{position:relative;padding-left:76px;margin-bottom:12px}
+.stop::before{content:"";position:absolute;left:31px;top:64px;bottom:-12px;width:2px;background:var(--ink)}
+.stop:last-child::before{display:none}
+.stop .time{position:absolute;left:0;top:0;width:64px;height:64px;background:var(--ink);color:var(--white);display:grid;place-items:center;align-content:center;gap:2px}
+.stop .time .icon{width:24px;height:24px}
+.stop .time span{font:500 13px var(--mono);color:var(--sign)}
+.stop details{background:var(--white);border:2px solid var(--ink)}
+.stop summary{list-style:none;cursor:pointer;padding:10px 44px 10px 14px;position:relative;min-height:60px}
+.stop summary::-webkit-details-marker{display:none}
+.stop summary::after{content:"";position:absolute;right:16px;top:50%;width:10px;height:10px;border-right:3px solid var(--ink);border-bottom:3px solid var(--ink);transform:translateY(-70%) rotate(45deg);transition:transform .25s cubic-bezier(.16,1,.3,1)}
+.stop details[open] summary::after{transform:translateY(-30%) rotate(-135deg)}
+.stop .name{font-size:18px;font-weight:700;line-height:1.3;display:block}
+.stop .kr{font-size:14px;color:var(--ink-3);display:block}
+.stop .go{font-size:13px;color:var(--ink-3);display:flex;gap:6px;align-items:flex-start;margin-top:4px}
+.stop .go .icon{width:16px;height:16px;margin-top:2px}
+.stop .body{padding:0 14px 14px;border-top:1px solid #ddd}
+.stop .body p{margin:12px 0 0;font-size:15px}
+.stop.past details{background:#FFF6CF}
+.stop.now .time{background:var(--sign);color:var(--ink);box-shadow:inset 0 0 0 3px var(--ink)}
+.stop.now .time span{color:var(--ink)}
+.stop.now details{border:3px solid var(--ink);box-shadow:0 4px 14px rgba(20,20,20,.18)}
+.line-chip{display:inline-block;font:700 12px var(--sans);padding:0 6px;border-radius:2px;color:#fff;margin-right:2px;vertical-align:1px}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.btn{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:8px 14px;border:2px solid var(--ink);background:var(--white);font-weight:700;font-size:15px;text-decoration:none;border-radius:0}
+.btn .icon{width:20px;height:20px}
+.btn.primary{background:var(--ink);color:var(--white)}
+.btn:hover{background:var(--sign)}.btn.primary:hover{background:#333}
+.btn:active{transform:translateY(1px)}
+
+/* sign panels (flight / hotel) */
+.panel{background:var(--white);border:3px solid var(--ink);margin-bottom:16px}
+.panel .head{display:flex;gap:16px;align-items:center;padding:16px;background:var(--sign);border-bottom:3px solid var(--ink)}
+.panel .head .pict{width:56px;height:56px}
+.panel .head .pict .icon{width:32px;height:32px}
+.mega{font-size:clamp(40px,12vw,64px);font-weight:800;line-height:1;letter-spacing:-.02em}
+.route{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:center;padding:16px}
+.route .end b{display:block;font-size:32px;font-weight:800;line-height:1.1}
+.route .end span{display:block;font-size:14px;color:var(--ink-3)}
+.route .end.arr{text-align:right}
+.route .mid{text-align:center;font-size:12px;color:var(--ink-3)}
+.route .mid .icon{display:block;margin:0 auto 4px}
+dl.facts{margin:0;display:grid;grid-template-columns:auto 1fr;border-top:1px solid #ddd}
+dl.facts dt,dl.facts dd{margin:0;padding:10px 16px;border-bottom:1px solid #ddd}
+dl.facts dt{font-size:14px;color:var(--ink-3);white-space:nowrap}
+dl.facts dd{font-weight:500;text-align:right;overflow-wrap:anywhere}
+dl.facts dd.code{font-family:var(--mono);font-size:17px;letter-spacing:.06em}
+.copy{border:0;background:none;padding:0 0 0 8px;vertical-align:-5px;color:var(--ink-3)}
+.copy .icon{width:18px;height:18px}
+.panel .foot{padding:12px 16px;font-size:14px;background:var(--surface)}
+.warnbox{background:var(--ink);color:var(--white);padding:14px 16px;margin:0 0 16px;display:flex;gap:12px;align-items:flex-start}
+.warnbox .icon{color:var(--sign)}
+.warnbox b{color:var(--sign)}
+
+/* checklist */
+.progress{display:flex;justify-content:space-between;align-items:baseline;border-bottom:3px solid var(--ink);padding-bottom:8px;margin-bottom:8px}
+.progress b{font-size:40px;font-weight:800;line-height:1}
+.meter{height:12px;background:var(--white);border:2px solid var(--ink);margin:0 0 8px}
+.meter i{display:block;height:100%;background:var(--ink);width:0;transition:width .4s cubic-bezier(.16,1,.3,1)}
+.checks{list-style:none;margin:0;padding:0;background:var(--white);border:2px solid var(--ink)}
+.checks li{border-top:1px solid #ddd}.checks li:first-child{border-top:0}
+.checks label{display:grid;grid-template-columns:32px 1fr;gap:12px;padding:12px 14px;cursor:pointer;align-items:start}
+.checks input{appearance:none;width:28px;height:28px;border:3px solid var(--ink);margin:0;background:var(--white);display:grid;place-items:center;cursor:pointer}
+.checks input:checked{background:var(--ink)}
+.checks input:checked::after{content:"";width:12px;height:7px;border-left:3px solid var(--sign);border-bottom:3px solid var(--sign);transform:translateY(-2px) rotate(-45deg)}
+.checks .t{font-weight:700;display:block}
+.checks .d{font-size:14px;color:var(--ink-3);display:block}
+.checks li.done .t{text-decoration:line-through;text-decoration-thickness:2px;color:var(--ink-3)}
+.checks .due{font:500 12px var(--mono);background:var(--sign);padding:0 4px;margin-left:6px;color:var(--ink)}
+
+/* converter */
+.conv{background:var(--ink);color:var(--white);padding:16px}
+.conv label{display:block;font-size:14px;font-weight:700;color:var(--sign);margin-bottom:4px}
+.conv .field{display:flex;align-items:center;background:var(--white);color:var(--ink);border:3px solid var(--white)}
+.conv .field:focus-within{border-color:var(--sign)}
+.conv .field span{padding:0 12px;font-weight:800;font-size:20px}
+.conv input{flex:1;min-width:0;border:0;background:none;font:800 32px var(--sans);padding:8px 12px 8px 0;color:var(--ink);font-variant-numeric:tabular-nums;outline:none}
+.conv .swap{display:flex;justify-content:center;padding:8px 0;color:var(--sign)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.chips button{background:none;border:2px solid var(--sign);color:var(--sign);padding:6px 12px;font-weight:700;min-height:40px}
+.chips button:hover{background:var(--sign);color:var(--ink)}
+.rate{display:flex;align-items:center;gap:8px;margin-top:16px;font-size:14px;color:var(--on-dark-2);flex-wrap:wrap}
+.rate input{width:7em;font:500 15px var(--mono);border:2px solid var(--on-dark-2);background:var(--panel);color:var(--white);padding:4px 8px}
+.tips{list-style:none;margin:0;padding:0}
+.tips li{display:grid;grid-template-columns:40px 1fr;gap:12px;padding:12px 0;border-top:2px solid var(--ink)}
+.tips .pict{width:40px;height:40px}.tips .pict .icon{width:24px;height:24px}
+.tips b{display:block}
+.tips span{font-size:15px}
+.sos{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.sos a{display:block;background:var(--ink);color:var(--white);padding:12px;text-decoration:none}
+.sos a b{display:block;font-size:28px;color:var(--sign);font-weight:800;line-height:1.1}
+.sos a span{font-size:13px}
+
+/* bottom nav */
+.nav{position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--ink);padding-bottom:env(safe-area-inset-bottom)}
+.nav .wrap{display:grid;grid-template-columns:repeat(5,1fr);padding:0}
+.nav button{background:none;border:0;color:var(--white);height:var(--nav-h);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:12px;font-weight:500}
+.nav button[aria-current="page"]{background:var(--sign);color:var(--ink);font-weight:700}
+
+/* taxi card dialog */
+dialog.taxi{border:0;padding:0;max-width:none;width:100%;height:100%;max-height:none;background:var(--sign);color:var(--ink)}
+dialog.taxi::backdrop{background:rgba(20,20,20,.6)}
+.taxi .in{min-height:100%;display:flex;flex-direction:column;justify-content:center;padding:24px;gap:24px}
+.taxi .big{font-size:clamp(32px,9vw,56px);font-weight:700;line-height:1.25}
+.taxi .addr{font-size:clamp(22px,6vw,34px);font-weight:700;background:var(--white);border:3px solid var(--ink);padding:16px}
+.toast{position:fixed;left:50%;bottom:calc(var(--nav-h) + 16px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--sign);padding:10px 16px;font-weight:700;opacity:0;pointer-events:none;transition:opacity .2s,transform .3s cubic-bezier(.16,1,.3,1);z-index:40}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+@media (min-width:760px){
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .band .wrap{grid-template-columns:80px 1fr 56px}
+  .pict{width:80px;height:80px}.pict .icon{width:48px;height:48px}
+  .edge{width:56px;height:80px}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <!-- Pictograms: Material Icons paths (Apache License 2.0) plus one authored won sign -->
+  <symbol id="i-plane" viewBox="0 0 24 24"><path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></symbol>
+  <symbol id="i-bed" viewBox="0 0 24 24"><path d="M7 13c1.66 0 3-1.34 3-3S8.66 7 7 7s-3 1.34-3 3 1.34 3 3 3zm12-6h-8v7H3V5H1v15h2v-3h18v3h2v-9c0-2.21-1.79-4-4-4z"/></symbol>
+  <symbol id="i-walk" viewBox="0 0 24 24"><path d="M13.5 5.5c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zM9.8 8.9L7 23h2.1l1.8-8 2.1 2v6h2v-7.5l-2.1-2 .6-3C14.8 12 16.8 13 19 13v-2c-1.9 0-3.5-1-4.3-2.4l-1-1.6c-.4-.6-1-1-1.7-1-.3 0-.5.1-.8.1L6 8.3V13h2V9.6l1.8-.7"/></symbol>
+  <symbol id="i-train" viewBox="0 0 24 24"><path d="M12 2c-4 0-8 .5-8 4v9.5C4 17.43 5.57 19 7.5 19L6 20.5v.5h2.23l2-2H14l2 2h2v-.5L16.5 19c1.93 0 3.5-1.57 3.5-3.5V6c0-3.5-3.58-4-8-4zM7.5 17c-.83 0-1.5-.67-1.5-1.5S6.67 14 7.5 14s1.5.67 1.5 1.5S8.33 17 7.5 17zm3.5-7H6V6h5v4zm2 0V6h5v4h-5zm3.5 7c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></symbol>
+  <symbol id="i-bus" viewBox="0 0 24 24"><path d="M4 16c0 .88.39 1.67 1 2.22V20c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h8v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1.78c.61-.55 1-1.34 1-2.22V6c0-3.5-3.58-4-8-4s-8 .5-8 4v10zm3.5 1c-.83 0-1.5-.67-1.5-1.5S6.67 14 7.5 14s1.5.67 1.5 1.5S8.33 17 7.5 17zm9 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm1.5-6H6V6h12v5z"/></symbol>
+  <symbol id="i-cup" viewBox="0 0 24 24"><path d="M20 3H4v10c0 2.21 1.79 4 4 4h6c2.21 0 4-1.79 4-4v-3h2c1.11 0 2-.89 2-2V5c0-1.11-.89-2-2-2zm0 5h-2V5h2v3zM4 19h16v2H4z"/></symbol>
+  <symbol id="i-food" viewBox="0 0 24 24"><path d="M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.84 3.75 3.97V22h2.5v-9.03C11.34 12.84 13 11.12 13 9V2h-2v7zm5-3v8h2.5v8H21V2c-2.76 0-5 2.24-5 4z"/></symbol>
+  <symbol id="i-bag" viewBox="0 0 24 24"><path d="M18 6h-2c0-2.21-1.79-4-4-4S8 3.79 8 6H6c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-6-2c1.1 0 2 .9 2 2h-4c0-1.1.9-2 2-2zm6 16H6V8h2v2c0 .55.45 1 1 1s1-.45 1-1V8h4v2c0 .55.45 1 1 1s1-.45 1-1V8h2v12z"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.39 5.39 0 0 1-4.4 2.26 5.4 5.4 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></symbol>
+  <symbol id="i-tree" viewBox="0 0 24 24"><path d="M17 12h2L12 2 5.05 12H7l-3.9 6h6.92v4h3.95v-4H21l-4-6z"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2V5c0-1.1-.89-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></symbol>
+  <symbol id="i-won" viewBox="0 0 24 24"><path d="M2.5 5h2.6l2.6 9.2L10.6 5h2.8l2.9 9.2L18.9 5h2.6l-4.2 14h-2.3L12 9.4 8.9 19H6.7z"/><rect x="1.5" y="9.2" width="21" height="1.8"/><rect x="1.5" y="12.6" width="21" height="1.8"/></symbol>
+</svg>
+
+<div class="strip"><div class="wrap"><span>首爾 <b>11/19–23</b></span><span id="phase">—</span></div></div>
+
+<header class="band" id="band" aria-live="polite">
+  <div class="wrap">
+    <div class="pict" id="bandIcon"><svg class="icon"><use href="#i-clock"/></svg></div>
+    <div class="msg">
+      <p class="what" id="bandWhat" role="heading" aria-level="1">載入中</p>
+      <p class="how" id="bandHow"></p>
+      <p class="route-l" id="bandRoute"></p>
+      <div class="pin-note" id="pinNote" hidden>已固定這一站 <button type="button" id="unpin">改回自動</button></div>
+    </div>
+    <a class="edge" id="bandGo" href="#trip" aria-label="跳到這一步"><svg class="icon"><use href="#i-arrow"/></svg></a>
+  </div>
+</header>
+
+<main class="wrap">
+
+<!-- ================= 行程 ================= -->
+<section class="view" id="view-trip" aria-labelledby="t-trip">
+  <h2 class="sr" id="t-trip">行程</h2>
+  <div class="board" role="region" aria-labelledby="t-board">
+    <h2 id="t-board">重要時刻</h2>
+    <ol id="boardList"></ol>
+  </div>
+
+  <div class="days" role="tablist" aria-label="選擇日期" id="dayTabs"></div>
+  <div id="dayPanel" role="tabpanel"></div>
+  <p class="note" style="margin-top:16px">營業時間、價格與交通時間都是參考，出發前用 Naver Map 再確認。點開每一站可以看細節、開地圖或複製韓文地名。</p>
+</section>
+
+<!-- ================= 航班 ================= -->
+<section class="view" id="view-flight" aria-labelledby="t-flight" hidden>
+  <h2 id="t-flight">航班 長榮航空</h2>
+  <div class="warnbox"><svg class="icon"><use href="#i-info"/></svg><div>已開放<b>網路報到</b>，座位還沒選。經濟艙 Basic 選位要另外付費。</div></div>
+  <div id="flights"></div>
+  <div class="panel">
+    <dl class="facts">
+      <dt>訂位代號</dt><dd class="code">F3CLHG<button class="copy" data-copy="F3CLHG" aria-label="複製訂位代號"><svg class="icon"><use href="#i-copy"/></svg></button></dd>
+      <dt>機票號碼</dt><dd class="code">695-2467250877<button class="copy" data-copy="6952467250877" aria-label="複製機票號碼"><svg class="icon"><use href="#i-copy"/></svg></button></dd>
+      <dt>旅客</dt><dd>KUO SHU HAO</dd>
+      <dt>艙等</dt><dd>經濟艙 Basic（V）</dd>
+      <dt>託運行李</dt><dd>1 件 23 公斤</dd>
+      <dt>手提行李</dt><dd>7 公斤</dd>
+      <dt>改期</dt><dd>每次 TWD 2,480 加價差</dd>
+      <dt>退票 / 未登機</dt><dd>各 TWD 4,960</dd>
+      <dt>付款</dt><dd>13,860 哩 + TWD 8,845</dd>
+    </dl>
+    <div class="foot">行動電源只能放手提行李，不能託運。</div>
+  </div>
+  <div class="actions"><a class="btn primary" href="https://www.evaair.com/zh-tw/index.html" target="_blank" rel="noopener"><svg class="icon"><use href="#i-plane"/></svg>長榮官網報到</a></div>
+</section>
+
+<!-- ================= 住宿 ================= -->
+<section class="view" id="view-hotel" aria-labelledby="t-hotel" hidden>
+  <h2 id="t-hotel">住宿 首爾江南雅樂軒</h2>
+  <div class="panel">
+    <div class="head">
+      <div class="pict"><svg class="icon"><use href="#i-bed"/></svg></div>
+      <div>
+        <div style="font-size:22px;font-weight:800;line-height:1.2">Aloft Seoul Gangnam</div>
+        <div class="ko" lang="ko" style="font-size:15px">알로프트 서울 강남</div>
+      </div>
+    </div>
+    <div class="route">
+      <div class="end"><b>11/19</b><span>四 15:00 後入住</span></div>
+      <div class="mid"><svg class="icon"><use href="#i-moon"/></svg>4 晚</div>
+      <div class="end arr"><b>11/23</b><span>一 12:00 前退房</span></div>
+    </div>
+    <dl class="facts">
+      <dt>地址</dt><dd>736 Yeongdong-daero, Gangnam-gu<br><span lang="ko">서울 강남구 영동대로 736</span></dd>
+      <dt>電話</dt><dd><a href="tel:+8225109700">+82 2 510 9700</a></dd>
+      <dt>房型</dt><dd>雅樂軒都市特大床房，不含早餐</dd>
+      <dt>房費</dt><dd><b>KRW 1,524,600</b><br><span class="note" id="hotelTwd"></span></dd>
+      <dt>付款方式</dt><dd>入住時在飯店付款，可能另收預授權</dd>
+      <dt>Trip.com 訂單</dt><dd class="code">1616334712445770<button class="copy" data-copy="1616334712445770" aria-label="複製訂單編號"><svg class="icon"><use href="#i-copy"/></svg></button></dd>
+      <dt>PIN 碼</dt><dd class="code">4792</dd>
+      <dt>飯店確認編號</dt><dd class="code">76431997<button class="copy" data-copy="76431997" aria-label="複製飯店確認編號"><svg class="icon"><use href="#i-copy"/></svg></button></dd>
+      <dt>免費取消</dt><dd>到 11/18 23:59（首爾時間），之後收 KRW 411,400</dd>
+    </dl>
+    <div class="foot">入住要帶護照，旅客需年滿 19 歲。飯店不提供牙刷、牙膏與刮鬍刀，請自備。早餐自助式每人 KRW 27,000。</div>
+  </div>
+  <div class="actions">
+    <button class="btn primary" type="button" id="openTaxi"><svg class="icon"><use href="#i-bus"/></svg>給計程車司機看</button>
+    <a class="btn" href="https://map.naver.com/p/search/%EC%95%8C%EB%A1%9C%ED%94%84%ED%8A%B8%20%EC%84%9C%EC%9A%B8%20%EA%B0%95%EB%82%A8" target="_blank" rel="noopener"><svg class="icon"><use href="#i-pin"/></svg>Naver 地圖</a>
+    <a class="btn" href="tel:+8225109700"><svg class="icon"><use href="#i-phone"/></svg>打給飯店</a>
+  </div>
+</section>
+
+<!-- ================= 待辦 ================= -->
+<section class="view" id="view-todo" aria-labelledby="t-todo" hidden>
+  <h2 id="t-todo">待辦清單</h2>
+  <div class="progress"><span><b id="doneCount">0</b> / <span id="allCount">0</span> 完成</span><span class="note">只記在這支手機的瀏覽器</span></div>
+  <div class="meter" aria-hidden="true"><i id="meter"></i></div>
+  <div id="checkGroups"></div>
+</section>
+
+<!-- ================= 匯率與交通 ================= -->
+<section class="view" id="view-money" aria-labelledby="t-money" hidden>
+  <h2 id="t-money">匯率換算</h2>
+  <div class="conv">
+    <label for="krw">韓元 KRW</label>
+    <div class="field"><span>₩</span><input id="krw" inputmode="numeric" autocomplete="off" value="10,000"></div>
+    <div class="swap" aria-hidden="true"><svg class="icon" style="transform:rotate(90deg)"><use href="#i-arrow"/></svg></div>
+    <label for="twd">新台幣 TWD</label>
+    <div class="field"><span>NT$</span><input id="twd" inputmode="decimal" autocomplete="off"></div>
+    <div class="chips" id="chips"></div>
+    <div class="rate"><label for="rate" style="color:inherit;margin:0;font-weight:500">匯率 1 KRW =</label><input id="rate" inputmode="decimal" value="0.02672"> TWD</div>
+    <p class="note" style="color:var(--on-dark-2);margin:8px 0 0">預設是臺灣銀行 11/17 22:21 的韓元現鈔參考匯率，可以自己改。</p>
+  </div>
+
+  <h2>錢怎麼用</h2>
+  <ul class="tips">
+    <li><div class="pict"><svg class="icon"><use href="#i-won"/></svg></div><div><b>現金帶 20–30 萬韓元就夠</b><span>首爾大多可刷卡。最大面額 50,000 元店家常找不開，多拿幾張 10,000 和 5,000。</span></div></li>
+    <li><div class="pict"><svg class="icon"><use href="#i-bag"/></svg></div><div><b>不夠再換</b><span>明洞換錢所匯率通常比機場好，要帶護照。也可以用開通跨國提款的提款卡在 ATM 領。</span></div></li>
+    <li><div class="pict"><svg class="icon"><use href="#i-check"/></svg></div><div><b>退稅</b><span>同店消費達門檻可退稅，單據和護照收好，離境在仁川機場報到前處理。</span></div></li>
+  </ul>
+
+  <h2>交通</h2>
+  <ul class="tips">
+    <li><div class="pict"><svg class="icon"><use href="#i-train"/></svg></div><div><b>T-money 交通卡</b><span>在便利商店（CU、GS25、7-Eleven）買卡並儲值現金，地鐵、公車、部分計程車都能用。</span></div></li>
+    <li><div class="pict"><svg class="icon"><use href="#i-pin"/></svg></div><div><b>查路線用 Naver Map 或 KakaoMap</b><span>Google Maps 在韓國的步行與開車導航不完整。搜尋時貼上韓文地名最準。</span></div></li>
+    <li><div class="pict"><svg class="icon"><use href="#i-bus"/></svg></div><div><b>機場到飯店</b><span>仁川 T1 到江南：機場巴士或計程車約 1 小時以上。11/19 晚上抵達前，先用 Naver Map 查往「알로프트 서울 강남」的巴士路線與末班時間。</span></div></li>
+    <li><div class="pict"><svg class="icon"><use href="#i-phone"/></svg></div><div><b>叫車用 Kakao T</b><span>深夜或 11/23 清晨去機場，前一晚先在 App 預約。</span></div></li>
+  </ul>
+
+  <h2>緊急聯絡</h2>
+  <div class="sos">
+    <a href="tel:112"><b>112</b><span>韓國報警</span></a>
+    <a href="tel:119"><b>119</b><span>火警、救護車</span></a>
+    <a href="tel:1330"><b>1330</b><span>韓國觀光諮詢熱線（有中文）</span></a>
+    <a href="tel:+886800085095"><b>+886 800 085 095</b><span>外交部緊急聯絡中心</span></a>
+  </div>
+  <p class="note" style="margin-top:12px">駐韓國台北代表部的聯絡方式請以外交部網站為準。身分證已遺失，在韓國只帶護照，護照影本另外存一份在手機裡。</p>
+</section>
+</main>
+
+<nav class="nav" aria-label="主要分頁">
+  <div class="wrap">
+    <button type="button" data-view="trip"><svg class="icon"><use href="#i-walk"/></svg>行程</button>
+    <button type="button" data-view="flight"><svg class="icon"><use href="#i-plane"/></svg>航班</button>
+    <button type="button" data-view="hotel"><svg class="icon"><use href="#i-bed"/></svg>住宿</button>
+    <button type="button" data-view="todo"><svg class="icon"><use href="#i-check"/></svg>待辦</button>
+    <button type="button" data-view="money"><svg class="icon"><use href="#i-won"/></svg>匯率交通</button>
+  </div>
+</nav>
+
+<dialog class="taxi" id="taxi" aria-label="給計程車司機看的地址">
+  <div class="in">
+    <div class="big" lang="ko">이 호텔로 가 주세요.</div>
+    <div class="addr" lang="ko">알로프트 서울 강남<br>서울 강남구 영동대로 736<br><span style="font-size:.7em">전화 02-510-9700</span></div>
+    <p style="margin:0">請載我到這家飯店。</p>
+    <button class="btn primary" type="button" id="closeTaxi" style="align-self:flex-start">關閉</button>
+  </div>
+</dialog>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(function(){
+"use strict";
+const $=s=>document.querySelector(s);
+const LINE={1:"#0052A4",2:"#00A84D",4:"#00A5DE",6:"#CD7C2F",7:"#747F00",9:"#BDB092",A:"#0090D2",K:"#77C4A3",S:"#F5A200"};
+const chip=(l,t)=>`<span class="line-chip" style="background:${LINE[l]||"#555"}${l==1?"":";color:#141414"}">${t}</span>`;
+
+/* Every timed thing in the trip. t = ISO time with its own zone. */
+const DAYS=[
+ {d:19,wd:"四",title:"出發與抵達",tag:"移動日",stops:[
+  {t:"2026-11-19T12:15+08:00",hm:"12:15",i:"bag",n:"抵達桃園機場 第二航廈",ko:"",go:"長榮航空 · 第二航廈",body:"先到 3 樓出境大廳臺灣銀行（第 8、9 號報到櫃台中間）領韓元，再到長榮 Bag drop 託運。要在通關前領。",q:""},
+  {t:"2026-11-19T15:15+08:00",hm:"15:15",i:"plane",n:"BR160 飛往仁川",ko:"",go:"桃園 T2 – 仁川 T1 · 2 小時 30 分",body:"波音 787-10。抵達時間 18:45（首爾）。",q:""},
+  {t:"2026-11-19T18:45+09:00",hm:"18:45",i:"plane",n:"抵達仁川機場 第一航廈",ko:"인천국제공항 제1여객터미널",go:"入境、領行李",body:"入境後在 1 樓便利商店買 T-money 卡並儲值。順便買水和隔天早餐。",q:"인천국제공항 제1여객터미널"},
+  {t:"2026-11-19T20:00+09:00",hm:"20:00",i:"bus",n:"前往飯店",ko:"알로프트 서울 강남",go:"機場巴士或計程車 · 約 1 小時以上",body:"在 Naver Map 輸入飯店韓文名查路線。計程車可以直接出示住宿分頁的「給計程車司機看」。",q:"알로프트 서울 강남"},
+  {t:"2026-11-19T21:30+09:00",hm:"21:30",i:"bed",n:"入住江南雅樂軒",ko:"알로프트 서울 강남",go:"出示護照 · 付房費 KRW 1,524,600",body:"確認編號 76431997。房費在飯店付，可能另收預授權。",q:"알로프트 서울 강남"},
+  {t:"2026-11-19T22:00+09:00",hm:"22:00",i:"food",n:"宵夜：湯飯或便利商店",ko:"국밥",go:"飯店附近",body:"第一晚簡單吃，24 小時營業的湯飯店（국밥）很常見。",q:"국밥"}
+ ]},
+ {d:20,wd:"五",title:"聖水、廣藏市場、清溪川",tag:"美食 · 潮流 · 夜景",stops:[
+  {t:"2026-11-20T09:30+09:00",hm:"09:30",i:"cup",n:"聖水洞咖啡街",ko:"성수동 카페거리",go:chip(2,"2")+"聖水站",body:"舊工廠改建的咖啡廳與烘焙坊集中在這一帶。早點去比較不用排隊。",q:"성수동 카페거리"},
+  {t:"2026-11-20T11:00+09:00",hm:"11:00",i:"bag",n:"聖水洞選物店與快閃店",ko:"성수동 팝업스토어",go:"步行",body:"韓國設計品牌、香氛和快閃店很多，每週都在換。",q:"성수동"},
+  {t:"2026-11-20T12:30+09:00",hm:"12:30",i:"tree",n:"首爾林散步＋午餐",ko:"서울숲",go:chip("K","水仁盆唐")+"首爾林站",body:"秋末樹林很漂亮。附近的小巷有不少午餐小店。",q:"서울숲"},
+  {t:"2026-11-20T16:30+09:00",hm:"16:30",i:"food",n:"廣藏市場",ko:"광장시장",go:chip(1,"1")+"鍾路5街站",body:"必吃綠豆煎餅（빈대떡）、麻藥飯捲（마약김밥）、生拌牛肉（육회）。傍晚人最多。",q:"광장시장"},
+  {t:"2026-11-20T19:00+09:00",hm:"19:00",i:"moon",n:"清溪川夜間散步",ko:"청계천",go:"從市場往西步行 · 約 30–40 分",body:"沿著溪走到清溪廣場，夜間燈光很適合拍照。",q:"청계천"},
+  {t:"2026-11-20T21:00+09:00",hm:"21:00",i:"train",n:"回飯店",ko:"알로프트 서울 강남",go:"用 Naver Map 查最快路線",body:"",q:"알로프트 서울 강남"}
+ ]},
+ {d:21,wd:"六",title:"望遠、延南、弘大",tag:"市場 · 漢江 · 購物",stops:[
+  {t:"2026-11-21T10:00+09:00",hm:"10:00",i:"food",n:"望遠市場",ko:"망원시장",go:chip(6,"6")+"望遠站",body:"炸雞、可樂餅、韓式糕點，價格親民，週末人多。",q:"망원시장"},
+  {t:"2026-11-21T12:00+09:00",hm:"12:00",i:"tree",n:"望遠漢江公園",ko:"망원한강공원",go:"從市場步行約 15 分",body:"漢江邊散步，便利商店有自煮拉麵機，可以體驗漢江拉麵。",q:"망원한강공원"},
+  {t:"2026-11-21T14:00+09:00",hm:"14:00",i:"walk",n:"延南洞與京義線林道",ko:"연남동 경의선숲길",go:chip(2,"2")+chip("A","機場線")+"弘大入口站 3 號出口",body:"鐵道改建的綠色步道，兩旁是咖啡和小店。",q:"경의선숲길 연남동"},
+  {t:"2026-11-21T16:00+09:00",hm:"16:00",i:"bag",n:"弘大逛街",ko:"홍대",go:"步行",body:"服飾、Olive Young、唱片行。週末傍晚常有街頭表演。",q:"홍대입구"},
+  {t:"2026-11-21T18:30+09:00",hm:"18:30",i:"food",n:"晚餐：韓式烤肉",ko:"고기집",go:"弘大一帶",body:"一個人吃可以找有一人份（1인분）的店，或點部隊鍋、炸雞。",q:"홍대 고기집"},
+  {t:"2026-11-21T20:30+09:00",hm:"20:30",i:"moon",n:"弘大夜晚街區，回飯店",ko:"알로프트 서울 강남",go:"地鐵或 Kakao T 叫車",body:"",q:"알로프트 서울 강남"}
+ ]},
+ {d:22,wd:"日",title:"COEX、漢南洞、明洞、南山",tag:"購物 · 夜景",stops:[
+  {t:"2026-11-22T10:00+09:00",hm:"10:00",i:"bag",n:"COEX 星空圖書館",ko:"별마당 도서관",go:chip(2,"2")+"三成站 · 離飯店近",body:"巨型書牆是拍照點，COEX 商場順便逛。",q:"별마당 도서관"},
+  {t:"2026-11-22T11:00+09:00",hm:"11:00",i:"tree",n:"奉恩寺",ko:"봉은사",go:chip(9,"9")+"奉恩寺站 · COEX 對面",body:"千年古剎就在高樓旁邊，短暫散步。",q:"봉은사"},
+  {t:"2026-11-22T13:00+09:00",hm:"13:00",i:"cup",n:"漢南洞",ko:"한남동",go:chip(6,"6")+"漢江鎮站",body:"設計師品牌、選物店與咖啡廳，午餐在這裡吃。",q:"한남동"},
+  {t:"2026-11-22T16:00+09:00",hm:"16:00",i:"bag",n:"明洞",ko:"명동",go:chip(4,"4")+"明洞站",body:"傍晚開始有路邊小吃攤。藥妝伴手禮在這裡一次買齊，也可以比較換錢所匯率。",q:"명동"},
+  {t:"2026-11-22T18:30+09:00",hm:"18:30",i:"moon",n:"南山 N 首爾塔夜景",ko:"N서울타워",go:"南山纜車或南山循環巴士",body:"首爾最經典的夜景。纜車營業時間出發前再確認。",q:"N서울타워"},
+  {t:"2026-11-22T21:00+09:00",hm:"21:00",i:"bed",n:"回飯店打包",ko:"알로프트 서울 강남",go:"明天 06:30 出發",body:"退稅單據和護照放隨身包。用 Kakao T 預約明早去機場的車。",q:"알로프트 서울 강남"}
+ ]},
+ {d:23,wd:"一",title:"返程",tag:"移動日",stops:[
+  {t:"2026-11-23T06:30+09:00",hm:"06:30",i:"bus",n:"退房，前往仁川機場",ko:"인천국제공항 제1여객터미널",go:"計程車或機場巴士 · 約 1 小時以上",body:"退房時間是 12:00 前，但班機 11:40 起飛，要很早出發。",q:"인천국제공항 제1여객터미널"},
+  {t:"2026-11-23T08:40+09:00",hm:"08:40",i:"check",n:"仁川 T1 報到",ko:"",go:"長榮航空櫃台 / Bag drop",body:"有買東西要退稅的話，先辦退稅再託運。",q:""},
+  {t:"2026-11-23T11:40+09:00",hm:"11:40",i:"plane",n:"BR169 飛往桃園",ko:"",go:"仁川 T1 – 桃園 T2 · 2 小時 50 分",body:"空中巴士 A330-300。13:30 抵達桃園。",q:""},
+  {t:"2026-11-23T13:30+08:00",hm:"13:30",i:"plane",n:"抵達桃園機場",ko:"",go:"歡迎回家",body:"",q:""}
+ ]}
+];
+const DEADLINES=[
+ {t:"2026-11-18T23:59+09:00",lbl:"飯店取消截止",hm:"11/18 23:59",go:"首爾時間 · 免費取消到這刻，保留飯店就不用動作"},
+ {t:"2026-11-19T11:00+08:00",lbl:"報到＋入境卡",hm:"11/19 11:00",go:"出門前在手機上完成"},
+ {t:"2026-11-19T12:15+08:00",lbl:"到桃園 T2 領韓元",hm:"11/19 12:15"},
+ {t:"2026-11-19T15:15+08:00",lbl:"BR160 起飛",hm:"11/19 15:15"},
+ {t:"2026-11-23T06:30+09:00",lbl:"退房去機場",hm:"11/23 06:30"},
+ {t:"2026-11-23T11:40+09:00",lbl:"BR169 起飛",hm:"11/23 11:40"}
+];
+const FLIGHTS=[
+ {no:"BR160",date:"11/19 星期四",from:"TPE",fromT:"桃園 T2",dep:"15:15",to:"ICN",toT:"仁川 T1",arr:"18:45",dur:"2 小時 30 分",ac:"波音 787-10"},
+ {no:"BR169",date:"11/23 星期一",from:"ICN",fromT:"仁川 T1",dep:"11:40",to:"TPE",toT:"桃園 T2",arr:"13:30",dur:"2 小時 50 分",ac:"空中巴士 A330-300"}
+];
+const CHECKS=[
+ {g:"出發前（11/17–11/18）",items:[
+  ["hotel","確認保留飯店","免費取消到 11/18 23:59（首爾時間），不取消就不用動作。","11/18"],
+  ["checkin","長榮網路報到與選位","Basic 票價選位要付費。","11/19"],
+  ["earrival","填 e-Arrival Card","抵達前 3 天內免費線上填寫。K-ETA 豁免到 2026/12/31。","11/19"],
+  ["krw","確認臺銀 T2 能否用護照領韓元","身分證遺失，打電話問機場分行。不行就到首爾再換。",""],
+  ["idcard","（選）戶政事務所補辦身分證","本人帶 2 吋照片、印章或簽名。出國只需要護照。",""],
+  ["esim","買 eSIM 或開通漫遊","",""],
+  ["insure","旅平險與不便險","",""],
+  ["card","信用卡開通海外交易","",""],
+  ["apps","下載 Naver Map、KakaoMap、Papago、Kakao T","",""],
+  ["adapter","準備轉接頭","韓國是 220V 圓孔插座，台灣的扁腳插頭不能直接插。",""],
+  ["toilet","自備牙刷、牙膏、刮鬍刀","飯店不提供。",""],
+  ["warm","帶保暖外套、圍巾","首爾 11 月下旬約 0–10°C。",""],
+  ["power","行動電源放手提行李","不能託運。",""],
+  ["mofa","外交部出國登錄","LINE 官方帳號 @boca.tw 也可以登錄。",""]
+ ]},
+ {g:"出發當天（11/19）",items:[
+  ["passport","護照帶在身上","",""],
+  ["arrive","12:15 前到桃園第二航廈","","12:15"],
+  ["pickup","3 樓臺銀領韓元","第 8、9 號報到櫃台中間，要在通關前領。",""],
+  ["bagdrop","長榮 Bag drop 託運","1 件 23 公斤。",""]
+ ]},
+ {g:"在首爾",items:[
+  ["tmoney","買 T-money 卡並儲值","便利商店有賣。",""],
+  ["payhotel","入住時付房費 KRW 1,524,600","",""],
+  ["tax","保留退稅單據","",""],
+  ["pack","11/22 晚上打包、預約 06:30 的車","",""]
+ ]}
+];
+
+/* ---------- helpers ---------- */
+const now=()=>new Date();
+const store={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const fmtDur=ms=>{const m=Math.round(ms/60000);if(m<1)return"現在";if(m<60)return m+" 分鐘後";const h=Math.floor(m/60),r=m%60;if(h<24)return h+" 小時"+(r?" "+r+" 分":"")+"後";const d=Math.floor(h/24),hh=h%24;return d+" 天"+(hh?" "+hh+" 小時":"")+"後"};
+const seoulDate=d=>Number(new Intl.DateTimeFormat("en-CA",{timeZone:"Asia/Seoul",day:"numeric"}).format(d));
+const seoulYM=d=>new Intl.DateTimeFormat("en-CA",{timeZone:"Asia/Seoul",year:"numeric",month:"2-digit"}).format(d);
+const icon=(n,c="icon")=>`<svg class="${c}"><use href="#i-${n}"/></svg>`;
+const ALL=[];DAYS.forEach(day=>day.stops.forEach((s,i)=>{s.id="s"+day.d+"-"+i;s.day=day.d;s.at=new Date(s.t);ALL.push(s)}));
+function toast(msg){const t=$("#toast");t.textContent=msg;t.classList.add("show");clearTimeout(toast._t);toast._t=setTimeout(()=>t.classList.remove("show"),1600)}
+async function copy(text){try{await navigator.clipboard.writeText(text)}catch(e){const a=document.createElement("textarea");a.value=text;document.body.appendChild(a);a.select();try{document.execCommand("copy")}catch(_){}a.remove()}toast("已複製 "+text)}
+
+/* ---------- sign band ---------- */
+let pinned=store.get("pin",null);
+let lastKey="";
+function nextStop(){const n=now();return ALL.find(s=>s.at>n)||null}
+function currentStop(){const n=now();let c=null;for(const s of ALL){if(s.at<=n)c=s}return c}
+/* Deadlines compete with stops for the band: whichever comes first wins. */
+const DL_ITEMS=DEADLINES.filter(d=>!ALL.some(s=>s.t===d.t)).map((d,i)=>({id:"dl"+i,at:new Date(d.t),hm:d.hm.split(" ")[1],day:Number(d.hm.split(" ")[0].split("/")[1]),i:"clock",n:d.lbl,ko:"",go:d.go||"",deadline:true}));
+function nextItem(){const n=now();return [...ALL,...DL_ITEMS].filter(x=>x.at>n).sort((a,b)=>a.at-b.at)[0]||null}
+function renderBand(){
+  const n=now();
+  let s=pinned?ALL.find(x=>x.id===pinned):null;
+  const isPinned=!!s;
+  if(!s)s=nextItem();
+  const icn=$("#bandIcon"),what=$("#bandWhat"),how=$("#bandHow"),route=$("#bandRoute"),go=$("#bandGo");
+  let key,iconName,w,t,h,href;
+  if(!s){key="done";iconName="check";w="首爾行程已完成";t="歡迎回家";h="";href="#trip"}
+  else{
+    key=s.id;iconName=s.i;
+    w=isPinned?`已選定 · 11/${s.day} ${s.hm}`:`11/${s.day} ${s.hm} · ${fmtDur(s.at-n)}`;
+    t=s.n;h=(s.ko?s.ko+" · ":"")+s.go.replace(/<[^>]+>/g," ").replace(/\s+/g," ").trim();
+    href=s.deadline?"#trip":"#"+s.id;
+  }
+  $("#pinNote").hidden=!isPinned;
+  go.setAttribute("href",href);
+  icn.innerHTML=icon(iconName);
+  how.textContent=w;
+  if(key!==lastKey){
+    what.textContent=t;route.textContent=h;route.hidden=!h;
+    [what,how,route].forEach(el=>{el.classList.remove("flip");void el.offsetWidth;el.classList.add("flip")});
+    lastKey=key;
+  }
+  // phase strip
+  const start=new Date("2026-11-19T15:15+08:00"),end=new Date("2026-11-23T13:30+08:00");
+  $("#phase").textContent=n<start?fmtDur(start-n).replace("後","後出發"):n<end?"旅行中 · 第 "+(seoulDate(n)-18)+" 天":"已回國";
+}
+const bandEl=$("#band");let ticking=false;
+window.addEventListener("scroll",()=>{if(ticking)return;ticking=true;requestAnimationFrame(()=>{bandEl.classList.toggle("compact",window.scrollY>160);ticking=false})},{passive:true});
+$("#bandGo").addEventListener("click",e=>{
+  const href=e.currentTarget.getAttribute("href");if(href==="#trip")return;
+  e.preventDefault();const s=ALL.find(x=>"#"+x.id===href);if(!s)return;
+  showView("trip");selectDay(s.day,false);
+  requestAnimationFrame(()=>{const el=document.getElementById(s.id);if(el){el.querySelector("details").open=true;el.scrollIntoView({behavior:"smooth",block:"start"})}});
+});
+$("#unpin").addEventListener("click",()=>{pinned=null;store.set("pin",null);renderBand();toast("已改回自動")});
+
+/* ---------- board ---------- */
+function renderBoard(){
+  const n=now();
+  $("#boardList").innerHTML=DEADLINES.map(d=>{
+    const at=new Date(d.t),past=at<n,soon=!past&&at-n<36*3600e3;
+    return `<li class="${past?"past":""}"><span class="t">${d.hm}</span><span class="lbl">${d.lbl}</span><span class="s ${past?"past":soon?"soon":""}">${past?"已過":soon?fmtDur(at-n):"排定"}</span></li>`
+  }).join("");
+}
+
+/* ---------- days ---------- */
+let curDay=null;
+function defaultDay(){const n=now();if(seoulYM(n)==="2026-11"){const d=seoulDate(n);if(d>=19&&d<=23)return d}return 19}
+function renderTabs(){
+  const today=seoulYM(now())==="2026-11"?seoulDate(now()):0;
+  $("#dayTabs").innerHTML=DAYS.map(d=>`<button type="button" role="tab" id="tab-${d.d}" aria-controls="dayPanel" aria-selected="${d.d===curDay}" tabindex="${d.d===curDay?0:-1}" class="${d.d===today?"today":""}" data-day="${d.d}"><b>${d.d}</b><span>${d.wd}${d.d===today?" · 今天":""}</span></button>`).join("");
+}
+function selectDay(d,focus){
+  curDay=d;store.set("day",d);renderTabs();
+  const day=DAYS.find(x=>x.d===d),n=now(),cur=currentStop(),nx=nextStop();
+  $("#dayPanel").setAttribute("aria-labelledby","tab-"+d);
+  $("#dayPanel").innerHTML=`<div class="dayhead"><h2>11/${d} ${day.title}</h2><span class="tag">${day.tag}</span></div>
+  <ol class="chain">${day.stops.map(s=>{
+    const nextOfS=ALL[ALL.indexOf(s)+1];
+    const isNow=cur===s&&nextOfS&&n<nextOfS.at&&nx&&nx.day===s.day;
+    const past=!isNow&&s.at<n;
+    const map=s.q?`<a class="btn" href="https://map.naver.com/p/search/${encodeURIComponent(s.q)}" target="_blank" rel="noopener">${icon("pin")}Naver 地圖</a><button class="btn" type="button" data-copy="${s.q}">${icon("copy")}複製韓文</button>`:"";
+    return `<li class="stop ${isNow?"now":""} ${past?"past":""}" id="${s.id}">
+      <div class="time">${icon(s.i)}<span>${s.hm}</span></div>
+      <details><summary><span class="name">${isNow?"現在 · ":""}${s.n}</span>${s.ko?`<span class="kr" lang="ko">${s.ko}</span>`:""}<span class="go"><span>${s.go}</span></span></summary>
+      <div class="body">${s.body?`<p>${s.body}</p>`:""}<div class="actions">${map}<button class="btn primary" type="button" data-pin="${s.id}">${icon("arrow")}設為下一步</button></div></div></details></li>`}).join("")}</ol>`;
+  if(focus)document.getElementById("tab-"+d).focus();
+}
+$("#dayTabs").addEventListener("click",e=>{const b=e.target.closest("button[data-day]");if(b)selectDay(Number(b.dataset.day),false)});
+$("#dayTabs").addEventListener("keydown",e=>{const i=DAYS.findIndex(x=>x.d===curDay);let j=null;if(e.key==="ArrowRight")j=Math.min(i+1,DAYS.length-1);if(e.key==="ArrowLeft")j=Math.max(i-1,0);if(e.key==="Home")j=0;if(e.key==="End")j=DAYS.length-1;if(j!==null){e.preventDefault();selectDay(DAYS[j].d,true)}});
+document.addEventListener("click",e=>{
+  const c=e.target.closest("[data-copy]");if(c){e.preventDefault();copy(c.dataset.copy);return}
+  const p=e.target.closest("[data-pin]");if(p){pinned=p.dataset.pin;store.set("pin",pinned);renderBand();window.scrollTo({top:0,behavior:"smooth"});toast("已設為下一步")}
+});
+
+/* ---------- flights ---------- */
+$("#flights").innerHTML=FLIGHTS.map(f=>`<div class="panel"><div class="head"><div class="pict">${icon("plane")}</div><div><div class="mega">${f.no}</div><div style="font-weight:700">${f.date}</div></div></div>
+ <div class="route"><div class="end"><b>${f.dep}</b><span>${f.from} ${f.fromT}</span></div><div class="mid">${icon("arrow")}${f.dur}</div><div class="end arr"><b>${f.arr}</b><span>${f.to} ${f.toT}</span></div></div>
+ <div class="foot">${f.ac} · 經濟艙 · 座位未選 · 時間皆為當地時間</div></div>`).join("");
+
+/* ---------- checklist ---------- */
+let done=store.get("checks",{});
+function renderChecks(){
+  let total=0,cnt=0;
+  $("#checkGroups").innerHTML=CHECKS.map(g=>`<h3>${g.g}</h3><ul class="checks">${g.items.map(([id,t,d,due])=>{total++;const on=!!done[id];if(on)cnt++;
+    return `<li class="${on?"done":""}"><label><input type="checkbox" data-check="${id}" ${on?"checked":""}><span><span class="t">${t}${due?`<span class="due">${due}</span>`:""}</span>${d?`<span class="d">${d}</span>`:""}</span></label></li>`}).join("")}</ul>`).join("");
+  $("#doneCount").textContent=cnt;$("#allCount").textContent=total;$("#meter").style.width=(cnt/total*100)+"%";
+}
+$("#checkGroups").addEventListener("change",e=>{const id=e.target.dataset.check;if(!id)return;done[id]=e.target.checked;store.set("checks",done);
+  e.target.closest("li").classList.toggle("done",e.target.checked);
+  const cnt=Object.values(done).filter(Boolean).length,total=CHECKS.reduce((a,g)=>a+g.items.length,0);
+  $("#doneCount").textContent=cnt;$("#meter").style.width=(cnt/total*100)+"%"});
+
+/* ---------- converter ---------- */
+const krw=$("#krw"),twd=$("#twd"),rate=$("#rate");
+const num=v=>Number(String(v).replace(/[^\d.]/g,""))||0;
+const fmt0=v=>Math.round(v).toLocaleString("en-US");
+const r=()=>num(rate.value)||0.02672;
+function fromKrw(){const k=num(krw.value);twd.value=k?fmt0(k*r()):""}
+function fromTwd(){const t=num(twd.value);krw.value=t?fmt0(t/r()):""}
+krw.addEventListener("input",()=>{const k=num(krw.value);krw.value=k?fmt0(k):"";fromKrw()});
+twd.addEventListener("input",fromTwd);
+rate.addEventListener("input",()=>{fromKrw();store.set("rate",rate.value);hotelTwd()});
+const savedRate=store.get("rate",null);if(savedRate)rate.value=savedRate;
+const CH=[["₩1,000",1000],["₩10,000",10000],["₩50,000",50000],["₩300,000",300000],["房費 ₩1,524,600",1524600]];
+$("#chips").innerHTML=CH.map(([l,v])=>`<button type="button" data-k="${v}">${l}</button>`).join("");
+$("#chips").addEventListener("click",e=>{const b=e.target.closest("button[data-k]");if(!b)return;krw.value=fmt0(Number(b.dataset.k));fromKrw()});
+function hotelTwd(){$("#hotelTwd").textContent="約 NT$ "+fmt0(1524600*r())+"（依匯率換算）"}
+fromKrw();hotelTwd();
+
+/* ---------- taxi dialog ---------- */
+const dlg=$("#taxi");
+$("#openTaxi").addEventListener("click",()=>{if(dlg.showModal)dlg.showModal();else dlg.setAttribute("open","")});
+$("#closeTaxi").addEventListener("click",()=>dlg.close());
+
+/* ---------- views ---------- */
+const VIEWS=["trip","flight","hotel","todo","money"];
+function showView(v,push){
+  if(!VIEWS.includes(v))v="trip";
+  VIEWS.forEach(x=>{$("#view-"+x).hidden=x!==v});
+  document.querySelectorAll(".nav button").forEach(b=>{if(b.dataset.view===v)b.setAttribute("aria-current","page");else b.removeAttribute("aria-current")});
+  if(push!==false)history.replaceState(null,"","#"+v);
+}
+document.querySelector(".nav").addEventListener("click",e=>{const b=e.target.closest("button[data-view]");if(!b)return;showView(b.dataset.view);window.scrollTo({top:0})});
+
+/* ---------- boot ---------- */
+curDay=defaultDay();
+showView(location.hash.slice(1)||"trip",false);
+renderBoard();selectDay(curDay,false);renderChecks();renderBand();
+setInterval(()=>{renderBand();renderBoard()},30000);
+document.addEventListener("visibilitychange",()=>{if(!document.hidden){renderBand();renderBoard()}});
+})();
+</script>
+</body>
+</html>

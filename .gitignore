@@ -1,0 +1,4 @@
+# Publish only the page itself; design notes and review captures stay local.
+*
+!.gitignore
+!index.html
