@@ -39,7 +39,7 @@ html{-webkit-text-size-adjust:100%;scroll-padding-top:120px;background:var(--ink
 a,button,summary,label,input{touch-action:manipulation}
 /* Standalone iPhone app: keep an ink bar under the translucent status bar. */
 body::before{content:"";position:fixed;top:0;left:0;right:0;height:env(safe-area-inset-top);background:var(--ink);z-index:35}
-body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5;overflow-wrap:anywhere;
+body{margin:0;min-height:100vh;background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5;overflow-wrap:anywhere;
   font-variant-numeric:tabular-nums;padding-bottom:calc(var(--nav-h) + env(safe-area-inset-bottom) + 24px)}
 ::selection{background:var(--ink);color:var(--sign)}
 :focus-visible{outline:3px solid var(--ink);outline-offset:2px}
@@ -278,11 +278,11 @@ dialog.taxi::backdrop{background:rgba(20,20,20,.6)}
 
 <div class="strip"><div class="wrap"><span>首爾 <b>11/19–23</b></span><span id="phase">—</span></div></div>
 
-<header class="band" id="band" aria-live="polite">
+<header class="band" id="band">
   <div class="wrap">
     <div class="pict" id="bandIcon"><svg class="icon"><use href="#i-clock"/></svg></div>
     <div class="msg">
-      <p class="what" id="bandWhat" role="heading" aria-level="1">載入中</p>
+      <p class="what" id="bandWhat" role="heading" aria-level="1" aria-live="polite">載入中</p>
       <p class="how" id="bandHow"></p>
       <p class="route-l" id="bandRoute"></p>
       <div class="pin-note" id="pinNote" hidden>已固定這一站 <button type="button" id="unpin">改回自動</button></div>
@@ -316,6 +316,7 @@ dialog.taxi::backdrop{background:rgba(20,20,20,.6)}
 <section class="view" id="view-flight" aria-labelledby="t-flight" hidden>
   <h2 id="t-flight">航班 長榮航空</h2>
   <div class="warnbox"><svg class="icon"><use href="#i-info"/></svg><div>已開放<b>網路報到</b>，座位還沒選。經濟艙 Basic 選位要另外付費。</div></div>
+  <div class="actions" style="margin:0 0 16px"><a class="btn primary" href="https://www.evaair.com/zh-tw/index.html" target="_blank" rel="noopener"><svg class="icon"><use href="#i-plane"/></svg>長榮官網報到</a></div>
   <div id="flights"></div>
   <div class="panel">
     <dl class="facts">
@@ -332,12 +333,16 @@ dialog.taxi::backdrop{background:rgba(20,20,20,.6)}
     </dl>
     <div class="foot">行動電源只能放手提行李，不能託運。長榮自 2025/3/1 起機上全程禁止使用和充電。</div>
   </div>
-  <div class="actions"><a class="btn primary" href="https://www.evaair.com/zh-tw/index.html" target="_blank" rel="noopener"><svg class="icon"><use href="#i-plane"/></svg>長榮官網報到</a></div>
 </section>
 
 <!-- ================= 住宿 ================= -->
 <section class="view" id="view-hotel" aria-labelledby="t-hotel" hidden>
   <h2 id="t-hotel">住宿 首爾江南雅樂軒</h2>
+  <div class="actions" style="margin:0 0 16px">
+    <button class="btn primary" type="button" id="openTaxi"><svg class="icon"><use href="#i-bus"/></svg>給計程車司機看</button>
+    <a class="btn" data-map="알로프트 서울 강남" href="https://map.naver.com/p/search/%EC%95%8C%EB%A1%9C%ED%94%84%ED%8A%B8%20%EC%84%9C%EC%9A%B8%20%EA%B0%95%EB%82%A8" target="_blank" rel="noopener"><svg class="icon"><use href="#i-pin"/></svg>Naver 地圖</a>
+    <a class="btn" href="tel:+8225109700"><svg class="icon"><use href="#i-phone"/></svg>打給飯店</a>
+  </div>
   <div class="panel">
     <div class="head">
       <div class="pict"><svg class="icon"><use href="#i-bed"/></svg></div>
@@ -352,7 +357,7 @@ dialog.taxi::backdrop{background:rgba(20,20,20,.6)}
       <div class="end arr"><b>11/23</b><span>一 12:00 前退房</span></div>
     </div>
     <dl class="facts">
-      <dt>地址</dt><dd>736 Yeongdong-daero, Gangnam-gu<br><span lang="ko">서울 강남구 영동대로 736</span></dd>
+      <dt>地址</dt><dd><span lang="ko" style="font-size:18px;font-weight:700">서울 강남구 영동대로 736</span><br><span class="note">736 Yeongdong-daero, Gangnam-gu</span></dd>
       <dt>最近地鐵</dt><dd>7 號線清潭站，步行約 5–15 分</dd>
       <dt>機場巴士</dt><dd>6006（往清潭、蠶室）</dd>
       <dt>電話</dt><dd><a href="tel:+8225109700">+82 2 510 9700</a></dd>
@@ -365,11 +370,6 @@ dialog.taxi::backdrop{background:rgba(20,20,20,.6)}
       <dt>免費取消</dt><dd>到 11/18 23:59（首爾時間），之後收 KRW 411,400</dd>
     </dl>
     <div class="foot">入住要帶護照，旅客需年滿 19 歲。飯店不提供牙刷、牙膏與刮鬍刀，請自備。早餐自助式每人 KRW 27,000。</div>
-  </div>
-  <div class="actions">
-    <button class="btn primary" type="button" id="openTaxi"><svg class="icon"><use href="#i-bus"/></svg>給計程車司機看</button>
-    <a class="btn" data-map="알로프트 서울 강남" href="https://map.naver.com/p/search/%EC%95%8C%EB%A1%9C%ED%94%84%ED%8A%B8%20%EC%84%9C%EC%9A%B8%20%EA%B0%95%EB%82%A8" target="_blank" rel="noopener"><svg class="icon"><use href="#i-pin"/></svg>Naver 地圖</a>
-    <a class="btn" href="tel:+8225109700"><svg class="icon"><use href="#i-phone"/></svg>打給飯店</a>
   </div>
 </section>
 
@@ -502,8 +502,8 @@ const DAYS=[
  ]}
 ];
 const DEADLINES=[
- {t:"2026-11-18T23:59+09:00",lbl:"飯店取消截止",hm:"11/18 23:59",go:"首爾時間 · 免費取消到這刻，保留飯店就不用動作"},
- {t:"2026-11-19T11:00+08:00",lbl:"長榮網路報到",hm:"11/19 11:00",go:"出門前在手機上完成"},
+ {t:"2026-11-18T23:59+09:00",lbl:"飯店取消截止",hm:"11/18 23:59",view:"hotel",go:"首爾時間 · 免費取消到這刻，保留飯店就不用動作"},
+ {t:"2026-11-19T11:00+08:00",lbl:"長榮網路報到",hm:"11/19 11:00",view:"flight",go:"出門前在手機上完成"},
  {t:"2026-11-19T12:15+08:00",lbl:"到桃園 T2 換韓元",hm:"11/19 12:15"},
  {t:"2026-11-19T15:15+08:00",lbl:"BR160 起飛",hm:"11/19 15:15"},
  {t:"2026-11-23T06:30+09:00",lbl:"退房去機場",hm:"11/23 06:30"},
@@ -571,7 +571,7 @@ let lastKey="";
 function nextStop(){const n=now();return ALL.find(s=>s.at>n)||null}
 function currentStop(){const n=now();let c=null;for(const s of ALL){if(s.at<=n)c=s}return c}
 /* Deadlines compete with stops for the band: whichever comes first wins. */
-const DL_ITEMS=DEADLINES.filter(d=>!ALL.some(s=>s.t===d.t)).map((d,i)=>({id:"dl"+i,at:new Date(d.t),hm:d.hm.split(" ")[1],day:Number(d.hm.split(" ")[0].split("/")[1]),i:"clock",n:d.lbl,ko:"",go:d.go||"",deadline:true}));
+const DL_ITEMS=DEADLINES.filter(d=>!ALL.some(s=>s.t===d.t)).map((d,i)=>({id:"dl"+i,at:new Date(d.t),hm:d.hm.split(" ")[1],day:Number(d.hm.split(" ")[0].split("/")[1]),i:"clock",n:d.lbl,ko:"",go:d.go||"",deadline:true,view:d.view||"trip"}));
 function nextItem(){const n=now();return [...ALL,...DL_ITEMS].filter(x=>x.at>n).sort((a,b)=>a.at-b.at)[0]||null}
 function renderBand(){
   const n=now();
@@ -585,7 +585,7 @@ function renderBand(){
     key=s.id;iconName=s.i;
     w=isPinned?`已選定 · 11/${s.day} ${s.hm}`:`11/${s.day} ${s.hm} · ${fmtDur(s.at-n)}`;
     t=s.n;h=(s.ko?s.ko+" · ":"")+s.go.replace(/<[^>]+>/g," ").replace(/\s+/g," ").trim();
-    href=s.deadline?"#trip":"#"+s.id;
+    href=s.deadline?"#"+s.view:"#"+s.id;
   }
   $("#pinNote").hidden=!isPinned;
   go.setAttribute("href",href);
@@ -603,8 +603,9 @@ function renderBand(){
 const bandEl=$("#band");let ticking=false;
 window.addEventListener("scroll",()=>{if(ticking)return;ticking=true;requestAnimationFrame(()=>{bandEl.classList.toggle("compact",window.scrollY>160);ticking=false})},{passive:true});
 $("#bandGo").addEventListener("click",e=>{
-  const href=e.currentTarget.getAttribute("href");if(href==="#trip")return;
-  e.preventDefault();const s=ALL.find(x=>"#"+x.id===href);if(!s)return;
+  const href=e.currentTarget.getAttribute("href");
+  e.preventDefault();
+  if(VIEWS.includes(href.slice(1))){showView(href.slice(1));window.scrollTo({top:0});return}const s=ALL.find(x=>"#"+x.id===href);if(!s)return;
   showView("trip");selectDay(s.day,false);
   requestAnimationFrame(()=>{const el=document.getElementById(s.id);if(el){el.querySelector("details").open=true;el.scrollIntoView({behavior:"smooth",block:"start"})}});
 });
@@ -660,7 +661,7 @@ const PRESET_DONE={earrival:true,esim:true,tmoney:true,navermap:true};
 let done=Object.assign({},PRESET_DONE,store.get("checks",{}));
 function renderChecks(){
   let total=0,cnt=0;
-  $("#checkGroups").innerHTML=CHECKS.map(g=>`<h3>${g.g}</h3><ul class="checks">${g.items.map(([id,t,d,due])=>{total++;const on=!!done[id];if(on)cnt++;
+  $("#checkGroups").innerHTML=CHECKS.map(g=>`<h3>${g.g}</h3><ul class="checks">${[...g.items].sort((a,b)=>(!!done[a[0]])-(!!done[b[0]])).map(([id,t,d,due])=>{total++;const on=!!done[id];if(on)cnt++;
     return `<li class="${on?"done":""}"><label><input type="checkbox" data-check="${id}" ${on?"checked":""}><span><span class="t">${t}${due?`<span class="due">${due}</span>`:""}</span>${d?`<span class="d">${d}</span>`:""}</span></label></li>`}).join("")}</ul>`).join("");
   $("#doneCount").textContent=cnt;$("#allCount").textContent=total;$("#meter").style.width=(cnt/total*100)+"%";
 }
