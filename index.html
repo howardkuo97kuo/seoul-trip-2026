@@ -330,7 +330,7 @@ dialog.taxi::backdrop{background:rgba(20,20,20,.6)}
       <dt>付款</dt><dd>13,860 哩 + TWD 8,845</dd>
       <dt>e-Arrival Card</dt><dd>已提交<br><span style="font-family:var(--mono);white-space:nowrap">EAC-26-PA-17398357</span><br><span class="note">有效到 11/21 00:21（首爾），入境不用出示</span></dd>
     </dl>
-    <div class="foot">行動電源只能放手提行李，不能託運。</div>
+    <div class="foot">行動電源只能放手提行李，不能託運。長榮自 2025/3/1 起機上全程禁止使用和充電。</div>
   </div>
   <div class="actions"><a class="btn primary" href="https://www.evaair.com/zh-tw/index.html" target="_blank" rel="noopener"><svg class="icon"><use href="#i-plane"/></svg>長榮官網報到</a></div>
 </section>
@@ -353,6 +353,8 @@ dialog.taxi::backdrop{background:rgba(20,20,20,.6)}
     </div>
     <dl class="facts">
       <dt>地址</dt><dd>736 Yeongdong-daero, Gangnam-gu<br><span lang="ko">서울 강남구 영동대로 736</span></dd>
+      <dt>最近地鐵</dt><dd>7 號線清潭站，步行約 5–15 分</dd>
+      <dt>機場巴士</dt><dd>6006（往清潭、蠶室）</dd>
       <dt>電話</dt><dd><a href="tel:+8225109700">+82 2 510 9700</a></dd>
       <dt>房型</dt><dd>雅樂軒都市特大床房，不含早餐</dd>
       <dt>房費</dt><dd><b>KRW 1,524,600</b><br><span class="note" id="hotelTwd"></span></dd>
@@ -366,7 +368,7 @@ dialog.taxi::backdrop{background:rgba(20,20,20,.6)}
   </div>
   <div class="actions">
     <button class="btn primary" type="button" id="openTaxi"><svg class="icon"><use href="#i-bus"/></svg>給計程車司機看</button>
-    <a class="btn" href="https://map.naver.com/p/search/%EC%95%8C%EB%A1%9C%ED%94%84%ED%8A%B8%20%EC%84%9C%EC%9A%B8%20%EA%B0%95%EB%82%A8" target="_blank" rel="noopener"><svg class="icon"><use href="#i-pin"/></svg>Naver 地圖</a>
+    <a class="btn" data-map="알로프트 서울 강남" href="https://map.naver.com/p/search/%EC%95%8C%EB%A1%9C%ED%94%84%ED%8A%B8%20%EC%84%9C%EC%9A%B8%20%EA%B0%95%EB%82%A8" target="_blank" rel="noopener"><svg class="icon"><use href="#i-pin"/></svg>Naver 地圖</a>
     <a class="btn" href="tel:+8225109700"><svg class="icon"><use href="#i-phone"/></svg>打給飯店</a>
   </div>
 </section>
@@ -404,8 +406,18 @@ dialog.taxi::backdrop{background:rgba(20,20,20,.6)}
   <ul class="tips">
     <li><div class="pict"><svg class="icon"><use href="#i-train"/></svg></div><div><b>T-money（Apple Wallet）</b><span>已加入 iPhone，地鐵、公車、部分計程車用手機感應即可。餘額不夠就在 Wallet 或便利商店儲值。</span></div></li>
     <li><div class="pict"><svg class="icon"><use href="#i-pin"/></svg></div><div><b>查路線用 Naver Map 或 KakaoMap</b><span>Google Maps 在韓國的步行與開車導航不完整。搜尋時貼上韓文地名最準。</span></div></li>
-    <li><div class="pict"><svg class="icon"><use href="#i-bus"/></svg></div><div><b>機場到飯店</b><span>仁川 T1 到江南：機場巴士或計程車約 1 小時以上。11/19 晚上抵達前，先用 Naver Map 查往「알로프트 서울 강남」的巴士路線與末班時間。</span></div></li>
+    <li><div class="pict"><svg class="icon"><use href="#i-bus"/></svg></div><div><b>機場到飯店</b><span>機場巴士 6006（往清潭、蠶室），約 1 小時以上、KRW 17,000 左右，末班約 23:00（參考）。也可搭計程車。飯店最近的地鐵是 7 號線清潭站，步行約 5–15 分。</span></div></li>
     <li><div class="pict"><svg class="icon"><use href="#i-phone"/></svg></div><div><b>叫車用 Kakao T</b><span>深夜或 11/23 清晨去機場，前一晚先在 App 預約。</span></div></li>
+  </ul>
+
+  <h2>注意事項</h2>
+  <ul class="tips">
+    <li><div class="pict"><svg class="icon"><use href="#i-info"/></svg></div><div><b>護照隨身帶</b><span>身分證已遺失，護照是唯一證件。護照照片頁另存一份在手機裡。</span></div></li>
+    <li><div class="pict"><svg class="icon"><use href="#i-phone"/></svg></div><div><b>台灣門號關掉數據漫遊</b><span>上網用韓國 eSIM，台灣門號只留著收簡訊，避免被收漫遊費。</span></div></li>
+    <li><div class="pict"><svg class="icon"><use href="#i-plane"/></svg></div><div><b>行動電源</b><span>只能手提、不要放頭頂置物櫃。長榮機上全程禁止使用和充電。</span></div></li>
+    <li><div class="pict"><svg class="icon"><use href="#i-train"/></svg></div><div><b>續攤留意末班車</b><span>地鐵末班大約在午夜前後，晚了就用 Kakao T 叫車，深夜車資較貴。</span></div></li>
+    <li><div class="pict"><svg class="icon"><use href="#i-food"/></svg></div><div><b>烤肉店常要 2 人份起點</b><span>和同學一起吃剛好。韓國餐廳不用給小費，小菜可以免費續。</span></div></li>
+    <li><div class="pict"><svg class="icon"><use href="#i-bag"/></svg></div><div><b>購物袋多半要錢</b><span>帶一個環保袋。退稅單據和護照放一起。</span></div></li>
   </ul>
 
   <h2>緊急聯絡</h2>
@@ -413,9 +425,11 @@ dialog.taxi::backdrop{background:rgba(20,20,20,.6)}
     <a href="tel:112"><b>112</b><span>韓國報警</span></a>
     <a href="tel:119"><b>119</b><span>火警、救護車</span></a>
     <a href="tel:1330"><b>1330</b><span>韓國觀光諮詢熱線（有中文）</span></a>
-    <a href="tel:+886800085095"><b>+886 800 085 095</b><span>外交部緊急聯絡中心</span></a>
+    <a href="tel:+821090802761"><b>010-9080-2761</b><span>駐韓國台北代表部急難專線（非急難勿撥）</span></a>
+    <a href="tel:+82263296000"><b>02-6329-6000</b><span>駐韓國台北代表部辦公室</span></a>
+    <a href="tel:+886800085095"><b>+886 800 085 095</b><span>外交部旅外國人急難救助</span></a>
   </div>
-  <p class="note" style="margin-top:12px">駐韓國台北代表部的聯絡方式請以外交部網站為準。身分證已遺失，在韓國只帶護照，護照影本另外存一份在手機裡。</p>
+  <p class="note" style="margin-top:12px">電話是 2026/11 查到的資料，出發前可到外交部領事事務局網站再確認。</p>
 </section>
 </main>
 
@@ -452,7 +466,7 @@ const DAYS=[
   {t:"2026-11-19T12:15+08:00",hm:"12:15",i:"bag",n:"抵達桃園機場 第二航廈",ko:"",go:"長榮航空 · 第二航廈",body:"先到 3 樓出境大廳的銀行櫃台現場換韓元（帶護照），再到長榮 Bag drop 託運。要在通關前換。",q:""},
   {t:"2026-11-19T15:15+08:00",hm:"15:15",i:"plane",n:"BR160 飛往仁川",ko:"",go:"桃園 T2 – 仁川 T1 · 2 小時 30 分",body:"波音 787-10。抵達時間 18:45（首爾）。",q:""},
   {t:"2026-11-19T18:45+09:00",hm:"18:45",i:"plane",n:"抵達仁川機場 第一航廈",ko:"인천국제공항 제1여객터미널",go:"入境、領行李",body:"e-Arrival Card 已提交，入境不用出示。打開 eSIM 行動數據，確認 Apple Wallet 的 T-money 有餘額，不夠就在 1 樓便利商店儲值。",q:"인천국제공항 제1여객터미널"},
-  {t:"2026-11-19T20:00+09:00",hm:"20:00",i:"bus",n:"前往飯店",ko:"알로프트 서울 강남",go:"機場巴士或計程車 · 約 1 小時以上",body:"在 Naver Map 輸入飯店韓文名查路線。計程車可以直接出示住宿分頁的「給計程車司機看」。",q:"알로프트 서울 강남"},
+  {t:"2026-11-19T20:00+09:00",hm:"20:00",i:"bus",n:"前往飯店",ko:"알로프트 서울 강남",go:"機場巴士 6006 · 約 1 小時以上",body:"6006 往清潭、蠶室方向，飯店附近有站，約 KRW 17,000，末班約 23:00（參考，以現場為準）。在 1 樓巴士售票處問站牌。搭計程車就出示住宿分頁的「給計程車司機看」。",q:"알로프트 서울 강남"},
   {t:"2026-11-19T21:30+09:00",hm:"21:30",i:"bed",n:"入住江南雅樂軒",ko:"알로프트 서울 강남",go:"出示護照 · 付房費 KRW 1,524,600",body:"確認編號 76431997。房費在飯店付，可能另收預授權。",q:"알로프트 서울 강남"},
   {t:"2026-11-19T22:00+09:00",hm:"22:00",i:"food",n:"宵夜：湯飯或便利商店",ko:"국밥",go:"飯店附近",body:"第一晚簡單吃，24 小時營業的湯飯店（국밥）很常見。",q:"국밥"}
  ]},
@@ -473,8 +487,8 @@ const DAYS=[
   {t:"2026-11-21T20:30+09:00",hm:"20:30",i:"moon",n:"弘大夜晚街區，回飯店",ko:"알로프트 서울 강남",go:"地鐵或 Kakao T 叫車",body:"",q:"알로프트 서울 강남"}
  ]},
  {d:22,wd:"日",title:"COEX、漢南洞、明洞、南山",tag:"同學 · 購物 · 夜景",stops:[
-  {t:"2026-11-22T10:00+09:00",hm:"10:00",i:"bag",n:"COEX 星空圖書館",ko:"별마당 도서관",go:chip(2,"2")+"三成站 · 離飯店近",body:"巨型書牆是拍照點，COEX 商場順便逛。",q:"별마당 도서관"},
-  {t:"2026-11-22T11:00+09:00",hm:"11:00",i:"tree",n:"奉恩寺",ko:"봉은사",go:chip(9,"9")+"奉恩寺站 · COEX 對面",body:"千年古剎就在高樓旁邊，短暫散步。",q:"봉은사"},
+  {t:"2026-11-22T10:30+09:00",hm:"10:30",i:"bag",n:"COEX 星空圖書館",ko:"별마당 도서관",go:"從飯店步行約 20 分，或搭計程車",body:"10:30 開門（參考）。巨型書牆是拍照點，COEX 商場順便逛。",q:"별마당 도서관"},
+  {t:"2026-11-22T11:30+09:00",hm:"11:30",i:"tree",n:"奉恩寺",ko:"봉은사",go:chip(9,"9")+"奉恩寺站 · COEX 對面",body:"千年古剎就在高樓旁邊，短暫散步。",q:"봉은사"},
   {t:"2026-11-22T13:00+09:00",hm:"13:00",i:"cup",n:"漢南洞",ko:"한남동",go:chip(6,"6")+"漢江鎮站",body:"設計師品牌、選物店與咖啡廳，午餐在這裡吃。",q:"한남동"},
   {t:"2026-11-22T16:00+09:00",hm:"16:00",i:"bag",n:"明洞",ko:"명동",go:chip(4,"4")+"明洞站",body:"傍晚開始有路邊小吃攤。藥妝伴手禮在這裡一次買齊，也可以比較換錢所匯率。",q:"명동"},
   {t:"2026-11-22T18:30+09:00",hm:"18:30",i:"moon",n:"南山 N 首爾塔夜景",ko:"N서울타워",go:"南山纜車或南山循環巴士",body:"首爾最經典的夜景。纜車營業時間出發前再確認。",q:"N서울타워"},
@@ -509,11 +523,12 @@ const CHECKS=[
   ["esim","買 eSIM","已購買。抵達仁川後切換到韓國 eSIM 的行動數據。",""],
   ["insure","旅平險與不便險","",""],
   ["card","信用卡開通海外交易","",""],
-  ["apps","下載 Naver Map、KakaoMap、Papago、Kakao T","",""],
+  ["navermap","下載 Naver Map","已完成。行程每一站的「Naver 地圖」按鈕會直接開 App。",""],
+  ["apps","下載 Papago、Kakao T","Papago 翻譯菜單，Kakao T 叫計程車。",""],
   ["adapter","準備轉接頭","韓國是 220V 圓孔插座，台灣的扁腳插頭不能直接插。",""],
   ["toilet","自備牙刷、牙膏、刮鬍刀","飯店不提供。",""],
   ["warm","帶保暖外套、圍巾","首爾 11 月下旬約 0–10°C。",""],
-  ["power","行動電源放手提行李","不能託運。",""],
+  ["power","行動電源放手提行李","不能託運，不要放頭頂置物櫃。長榮機上全程禁止使用和充電。",""],
   ["mofa","外交部出國登錄","LINE 官方帳號 @boca.tw 也可以登錄。",""]
  ]},
  {g:"出發當天（11/19）",items:[
@@ -528,6 +543,7 @@ const CHECKS=[
   ["tmoneytop","T-money 儲值","在 Wallet 裡儲值；若信用卡無法儲值，到便利商店付現儲值（參考）。",""],
   ["payhotel","入住時付房費 KRW 1,524,600","",""],
   ["tax","保留退稅單據","",""],
+  ["checkin2","11/22 辦回程 BR169 網路報到","",""],
   ["pack","11/22 晚上打包、預約 06:30 的車","",""]
  ]}
 ];
@@ -538,6 +554,12 @@ const store={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.
 const fmtDur=ms=>{const m=Math.round(ms/60000);if(m<1)return"現在";if(m<60)return m+" 分鐘後";const h=Math.floor(m/60),r=m%60;if(h<24)return h+" 小時"+(r?" "+r+" 分":"")+"後";const d=Math.floor(h/24),hh=h%24;return d+" 天"+(hh?" "+hh+" 小時":"")+"後"};
 const seoulDate=d=>Number(new Intl.DateTimeFormat("en-CA",{timeZone:"Asia/Seoul",day:"numeric"}).format(d));
 const seoulYM=d=>new Intl.DateTimeFormat("en-CA",{timeZone:"Asia/Seoul",year:"numeric",month:"2-digit"}).format(d);
+/* Naver Map: on iPhone open the installed app directly; elsewhere use the web map. */
+const IS_IOS=/iPhone|iPad|iPod/.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
+const mapHref=q=>IS_IOS?`nmap://search?query=${encodeURIComponent(q)}&appname=io.github.howardkuo97kuo.seoultrip`:`https://map.naver.com/p/search/${encodeURIComponent(q)}`;
+document.querySelectorAll("a[data-map]").forEach(a=>a.href=mapHref(a.dataset.map));
+/* App scheme links must open in place, not in a new tab. */
+document.addEventListener("click",e=>{const a=e.target.closest("a[data-map]");if(a&&IS_IOS){e.preventDefault();location.href=mapHref(a.dataset.map)}});
 const icon=(n,c="icon")=>`<svg class="${c}"><use href="#i-${n}"/></svg>`;
 const ALL=[];DAYS.forEach(day=>day.stops.forEach((s,i)=>{s.id="s"+day.d+"-"+i;s.day=day.d;s.at=new Date(s.t);ALL.push(s)}));
 function toast(msg){const t=$("#toast");t.textContent=msg;t.classList.add("show");clearTimeout(toast._t);toast._t=setTimeout(()=>t.classList.remove("show"),1600)}
@@ -613,7 +635,7 @@ function selectDay(d,focus){
     const nextOfS=ALL[ALL.indexOf(s)+1];
     const isNow=cur===s&&nextOfS&&n<nextOfS.at&&nx&&nx.day===s.day;
     const past=!isNow&&s.at<n;
-    const map=s.q?`<a class="btn" href="https://map.naver.com/p/search/${encodeURIComponent(s.q)}" target="_blank" rel="noopener">${icon("pin")}Naver 地圖</a><button class="btn" type="button" data-copy="${s.q}">${icon("copy")}複製韓文</button>`:"";
+    const map=s.q?`<a class="btn" data-map="${s.q}" href="${mapHref(s.q)}" target="_blank" rel="noopener">${icon("pin")}Naver 地圖</a><button class="btn" type="button" data-copy="${s.q}">${icon("copy")}複製韓文</button>`:"";
     return `<li class="stop ${isNow?"now":""} ${past?"past":""}" id="${s.id}">
       <div class="time">${icon(s.i)}<span>${s.hm}</span></div>
       <details><summary><span class="name">${isNow?"現在 · ":""}${s.n}</span>${s.ko?`<span class="kr" lang="ko">${s.ko}</span>`:""}<span class="go"><span>${s.go}</span></span></summary>
@@ -634,7 +656,7 @@ $("#flights").innerHTML=FLIGHTS.map(f=>`<div class="panel"><div class="head"><di
 
 /* ---------- checklist ---------- */
 /* Finished before publishing; a viewer's own ticks still override. */
-const PRESET_DONE={earrival:true,esim:true,tmoney:true};
+const PRESET_DONE={earrival:true,esim:true,tmoney:true,navermap:true};
 let done=Object.assign({},PRESET_DONE,store.get("checks",{}));
 function renderChecks(){
   let total=0,cnt=0;
