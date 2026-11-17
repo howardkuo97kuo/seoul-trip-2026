@@ -17,8 +17,9 @@
   --ink:#141414;
   --panel:#1F1F1F;
   --white:#FFFFFF;
-  --surface:#F4F1E6;
-  --ink-2:#3E3300;      /* secondary text on yellow, tinted from the ground */
+  --ground:#E9EBEE;     /* concourse gray: yellow is reserved for signs */
+  --surface:#F4F5F6;
+  --ink-2:#45484D;      /* secondary text on yellow and on the gray ground */
   --ink-3:#5A5A5A;      /* secondary text on white */
   --on-dark-2:#C9C9C9;
   --rule:#141414;
@@ -31,13 +32,13 @@
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%;scroll-padding-top:120px}
-body{margin:0;background:var(--sign);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5;word-break:keep-all;overflow-wrap:anywhere;
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5;word-break:keep-all;overflow-wrap:anywhere;
   font-variant-numeric:tabular-nums;padding-bottom:calc(var(--nav-h) + env(safe-area-inset-bottom) + 24px)}
 ::selection{background:var(--ink);color:var(--sign)}
 :focus-visible{outline:3px solid var(--ink);outline-offset:2px}
 .conv :focus-visible,.nav :focus-visible,.board :focus-visible,.sos :focus-visible,.warnbox :focus-visible{outline-color:var(--sign)}
-html{scrollbar-color:var(--ink) var(--sign-deep)}
-::-webkit-scrollbar{width:10px;height:10px}::-webkit-scrollbar-track{background:var(--sign-deep)}::-webkit-scrollbar-thumb{background:var(--ink)}
+html{scrollbar-color:var(--ink) #D3D6DA}
+::-webkit-scrollbar{width:10px;height:10px}::-webkit-scrollbar-track{background:#D3D6DA}::-webkit-scrollbar-thumb{background:var(--ink)}
 a{color:inherit;text-underline-offset:3px;text-decoration-thickness:2px}
 button{font:inherit;color:inherit;cursor:pointer}
 [lang|="ko"],.ko{font-family:var(--ko)}
@@ -99,7 +100,7 @@ p{margin:0 0 12px}
 
 /* day tabs */
 .days{display:grid;grid-template-columns:repeat(5,1fr);margin:24px 0 0;border:3px solid var(--ink);background:var(--ink);gap:3px}
-.days button{background:var(--sign);border:0;padding:8px 2px;text-align:center;min-height:64px}
+.days button{background:var(--white);border:0;padding:8px 2px;text-align:center;min-height:64px}
 .days b{display:block;font-size:24px;font-weight:800;line-height:1.1}
 .days span{font-size:12px;font-weight:500}
 .days button[aria-selected="true"]{background:var(--ink);color:var(--sign)}
@@ -127,7 +128,7 @@ p{margin:0 0 12px}
 .stop .go .icon{width:16px;height:16px;margin-top:2px}
 .stop .body{padding:0 14px 14px;border-top:1px solid #ddd}
 .stop .body p{margin:12px 0 0;font-size:15px}
-.stop.past details{background:#FFF6CF}
+.stop.past details{background:var(--surface)}
 .stop.now .time{background:var(--sign);color:var(--ink);box-shadow:inset 0 0 0 3px var(--ink)}
 .stop.now .time span{color:var(--ink)}
 .stop.now details{border:3px solid var(--ink)}
@@ -141,8 +142,9 @@ p{margin:0 0 12px}
 
 /* sign panels (flight / hotel) */
 .panel{background:var(--white);border:3px solid var(--ink);margin-bottom:16px}
-.panel .head{display:flex;gap:16px;align-items:center;padding:16px;background:var(--sign);border-bottom:3px solid var(--ink)}
-.panel .head .pict{width:56px;height:56px}
+.panel .head{display:flex;gap:16px;align-items:center;padding:16px;background:var(--ink);color:var(--white);border-bottom:3px solid var(--ink)}
+.panel .head .pict{width:56px;height:56px;background:var(--sign);color:var(--ink)}
+.panel .head .mega{color:var(--sign)}
 .panel .head .pict .icon{width:32px;height:32px}
 .mega{font-size:clamp(40px,12vw,64px);font-weight:800;line-height:1;letter-spacing:-.02em}
 .route{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:center;padding:16px}
@@ -295,6 +297,7 @@ dialog.taxi::backdrop{background:rgba(20,20,20,.6)}
       <dt>改期</dt><dd>每次 TWD 2,480 加價差</dd>
       <dt>退票 / 未登機</dt><dd>各 TWD 4,960</dd>
       <dt>付款</dt><dd>13,860 哩 + TWD 8,845</dd>
+      <dt>e-Arrival Card</dt><dd>已提交<br><span style="font-family:var(--mono);white-space:nowrap">EAC-26-PA-17398357</span><br><span class="note">有效到 11/21 00:21（首爾），入境不用出示</span></dd>
     </dl>
     <div class="foot">行動電源只能放手提行李，不能託運。</div>
   </div>
@@ -368,7 +371,7 @@ dialog.taxi::backdrop{background:rgba(20,20,20,.6)}
 
   <h2>交通</h2>
   <ul class="tips">
-    <li><div class="pict"><svg class="icon"><use href="#i-train"/></svg></div><div><b>T-money 交通卡</b><span>在便利商店（CU、GS25、7-Eleven）買卡並儲值現金，地鐵、公車、部分計程車都能用。</span></div></li>
+    <li><div class="pict"><svg class="icon"><use href="#i-train"/></svg></div><div><b>T-money（Apple Wallet）</b><span>已加入 iPhone，地鐵、公車、部分計程車用手機感應即可。餘額不夠就在 Wallet 或便利商店儲值。</span></div></li>
     <li><div class="pict"><svg class="icon"><use href="#i-pin"/></svg></div><div><b>查路線用 Naver Map 或 KakaoMap</b><span>Google Maps 在韓國的步行與開車導航不完整。搜尋時貼上韓文地名最準。</span></div></li>
     <li><div class="pict"><svg class="icon"><use href="#i-bus"/></svg></div><div><b>機場到飯店</b><span>仁川 T1 到江南：機場巴士或計程車約 1 小時以上。11/19 晚上抵達前，先用 Naver Map 查往「알로프트 서울 강남」的巴士路線與末班時間。</span></div></li>
     <li><div class="pict"><svg class="icon"><use href="#i-phone"/></svg></div><div><b>叫車用 Kakao T</b><span>深夜或 11/23 清晨去機場，前一晚先在 App 預約。</span></div></li>
@@ -417,7 +420,7 @@ const DAYS=[
  {d:19,wd:"四",title:"出發與抵達",tag:"移動日",stops:[
   {t:"2026-11-19T12:15+08:00",hm:"12:15",i:"bag",n:"抵達桃園機場 第二航廈",ko:"",go:"長榮航空 · 第二航廈",body:"先到 3 樓出境大廳臺灣銀行（第 8、9 號報到櫃台中間）領韓元，再到長榮 Bag drop 託運。要在通關前領。",q:""},
   {t:"2026-11-19T15:15+08:00",hm:"15:15",i:"plane",n:"BR160 飛往仁川",ko:"",go:"桃園 T2 – 仁川 T1 · 2 小時 30 分",body:"波音 787-10。抵達時間 18:45（首爾）。",q:""},
-  {t:"2026-11-19T18:45+09:00",hm:"18:45",i:"plane",n:"抵達仁川機場 第一航廈",ko:"인천국제공항 제1여객터미널",go:"入境、領行李",body:"入境後在 1 樓便利商店買 T-money 卡並儲值。順便買水和隔天早餐。",q:"인천국제공항 제1여객터미널"},
+  {t:"2026-11-19T18:45+09:00",hm:"18:45",i:"plane",n:"抵達仁川機場 第一航廈",ko:"인천국제공항 제1여객터미널",go:"入境、領行李",body:"e-Arrival Card 已提交，入境不用出示。打開 eSIM 行動數據，確認 Apple Wallet 的 T-money 有餘額，不夠就在 1 樓便利商店儲值。",q:"인천국제공항 제1여객터미널"},
   {t:"2026-11-19T20:00+09:00",hm:"20:00",i:"bus",n:"前往飯店",ko:"알로프트 서울 강남",go:"機場巴士或計程車 · 約 1 小時以上",body:"在 Naver Map 輸入飯店韓文名查路線。計程車可以直接出示住宿分頁的「給計程車司機看」。",q:"알로프트 서울 강남"},
   {t:"2026-11-19T21:30+09:00",hm:"21:30",i:"bed",n:"入住江南雅樂軒",ko:"알로프트 서울 강남",go:"出示護照 · 付房費 KRW 1,524,600",body:"確認編號 76431997。房費在飯店付，可能另收預授權。",q:"알로프트 서울 강남"},
   {t:"2026-11-19T22:00+09:00",hm:"22:00",i:"food",n:"宵夜：湯飯或便利商店",ko:"국밥",go:"飯店附近",body:"第一晚簡單吃，24 小時營業的湯飯店（국밥）很常見。",q:"국밥"}
@@ -455,7 +458,7 @@ const DAYS=[
 ];
 const DEADLINES=[
  {t:"2026-11-18T23:59+09:00",lbl:"飯店取消截止",hm:"11/18 23:59",go:"首爾時間 · 免費取消到這刻，保留飯店就不用動作"},
- {t:"2026-11-19T11:00+08:00",lbl:"報到＋入境卡",hm:"11/19 11:00",go:"出門前在手機上完成"},
+ {t:"2026-11-19T11:00+08:00",lbl:"長榮網路報到",hm:"11/19 11:00",go:"出門前在手機上完成"},
  {t:"2026-11-19T12:15+08:00",lbl:"到桃園 T2 領韓元",hm:"11/19 12:15"},
  {t:"2026-11-19T15:15+08:00",lbl:"BR160 起飛",hm:"11/19 15:15"},
  {t:"2026-11-23T06:30+09:00",lbl:"退房去機場",hm:"11/23 06:30"},
@@ -469,10 +472,10 @@ const CHECKS=[
  {g:"出發前（11/17–11/18）",items:[
   ["hotel","確認保留飯店","免費取消到 11/18 23:59（首爾時間），不取消就不用動作。","11/18"],
   ["checkin","長榮網路報到與選位","Basic 票價選位要付費。","11/19"],
-  ["earrival","填 e-Arrival Card","抵達前 3 天內免費線上填寫。K-ETA 豁免到 2026/12/31。","11/19"],
+  ["earrival","填 e-Arrival Card","已提交，編號 EAC-26-PA-17398357，有效到 11/21 00:21（首爾）。入境時不用出示。",""],
   ["krw","確認臺銀 T2 能否用護照領韓元","身分證遺失，打電話問機場分行。不行就到首爾再換。",""],
   ["idcard","（選）戶政事務所補辦身分證","本人帶 2 吋照片、印章或簽名。出國只需要護照。",""],
-  ["esim","買 eSIM 或開通漫遊","",""],
+  ["esim","買 eSIM","已購買。抵達仁川後切換到韓國 eSIM 的行動數據。",""],
   ["insure","旅平險與不便險","",""],
   ["card","信用卡開通海外交易","",""],
   ["apps","下載 Naver Map、KakaoMap、Papago、Kakao T","",""],
@@ -489,7 +492,8 @@ const CHECKS=[
   ["bagdrop","長榮 Bag drop 託運","1 件 23 公斤。",""]
  ]},
  {g:"在首爾",items:[
-  ["tmoney","買 T-money 卡並儲值","便利商店有賣。",""],
+  ["tmoney","T-money 加入 Apple Wallet","已完成。搭車時用 iPhone 感應即可。",""],
+  ["tmoneytop","T-money 儲值","在 Wallet 裡儲值；若信用卡無法儲值，到便利商店付現儲值（參考）。",""],
   ["payhotel","入住時付房費 KRW 1,524,600","",""],
   ["tax","保留退稅單據","",""],
   ["pack","11/22 晚上打包、預約 06:30 的車","",""]
@@ -597,7 +601,9 @@ $("#flights").innerHTML=FLIGHTS.map(f=>`<div class="panel"><div class="head"><di
  <div class="foot">${f.ac} · 經濟艙 · 座位未選 · 時間皆為當地時間</div></div>`).join("");
 
 /* ---------- checklist ---------- */
-let done=store.get("checks",{});
+/* Finished before publishing; a viewer's own ticks still override. */
+const PRESET_DONE={earrival:true,esim:true,tmoney:true};
+let done=Object.assign({},PRESET_DONE,store.get("checks",{}));
 function renderChecks(){
   let total=0,cnt=0;
   $("#checkGroups").innerHTML=CHECKS.map(g=>`<h3>${g.g}</h3><ul class="checks">${g.items.map(([id,t,d,due])=>{total++;const on=!!done[id];if(on)cnt++;
