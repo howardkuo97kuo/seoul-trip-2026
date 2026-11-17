@@ -13,7 +13,6 @@
 <style>
 :root{
   --sign:#FFC917;
-  --sign-deep:#F2B800;
   --ink:#141414;
   --panel:#1F1F1F;
   --white:#FFFFFF;
@@ -22,12 +21,10 @@
   --ink-2:#45484D;      /* secondary text on yellow and on the gray ground */
   --ink-3:#5A5A5A;      /* secondary text on white */
   --on-dark-2:#C9C9C9;
-  --rule:#141414;
   --sans:"Fira Sans","Noto Sans TC",system-ui,sans-serif;
   --ko:"Noto Sans KR","Fira Sans",sans-serif;
   --mono:"Fira Mono",ui-monospace,monospace;
   --nav-h:64px;
-  --u:8px;
   color-scheme:light;
 }
 *{box-sizing:border-box}
@@ -56,7 +53,6 @@ button{font:inherit;color:inherit;cursor:pointer}
 .pict{width:64px;height:64px;background:var(--ink);color:var(--white);display:grid;place-items:center}
 .pict .icon{width:40px;height:40px}
 .msg{min-width:0;perspective:600px}
-.when{margin:0;font-size:14px;font-weight:700;color:var(--ink-2)}
 .what{margin:0;font-size:clamp(30px,8.5vw,60px);font-weight:900;line-height:1.05;letter-spacing:-.01em;word-break:keep-all;overflow-wrap:anywhere}
 .how{margin:6px 0 0;font-size:15px;font-weight:700;color:var(--ink)}
 .route-l{margin:2px 0 0;font-size:14px;font-weight:500;color:var(--ink-2)}
@@ -220,10 +216,18 @@ dialog.taxi::backdrop{background:rgba(20,20,20,.6)}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
 @media (min-width:760px){
-  .two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
   .band .wrap{grid-template-columns:80px 1fr 56px}
   .pict{width:80px;height:80px}.pict .icon{width:48px;height:48px}
   .edge{width:56px;height:80px}
+}
+/* Desktop: the board becomes a fixed departures column beside the day's chain. */
+@media (min-width:1024px){
+  .wrap{max-width:1120px}
+  #view-flight,#view-hotel,#view-todo,#view-money{max-width:720px;margin:0 auto}
+  #view-trip:not([hidden]){display:grid;grid-template-columns:minmax(320px,380px) 1fr;column-gap:32px;align-items:start}
+  #view-trip .board{grid-column:1;grid-row:1 / span 3;position:sticky;top:112px}
+  #view-trip .days,#dayPanel,#view-trip>.note{grid-column:2}
+  #view-trip .days{margin-top:0}
 }
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
@@ -418,22 +422,22 @@ const chip=(l,t)=>`<span class="line-chip" style="background:${LINE[l]||"#555"}$
 /* Every timed thing in the trip. t = ISO time with its own zone. */
 const DAYS=[
  {d:19,wd:"四",title:"出發與抵達",tag:"移動日",stops:[
-  {t:"2026-11-19T12:15+08:00",hm:"12:15",i:"bag",n:"抵達桃園機場 第二航廈",ko:"",go:"長榮航空 · 第二航廈",body:"先到 3 樓出境大廳臺灣銀行（第 8、9 號報到櫃台中間）領韓元，再到長榮 Bag drop 託運。要在通關前領。",q:""},
+  {t:"2026-11-19T12:15+08:00",hm:"12:15",i:"bag",n:"抵達桃園機場 第二航廈",ko:"",go:"長榮航空 · 第二航廈",body:"先到 3 樓出境大廳的銀行櫃台現場換韓元（帶護照），再到長榮 Bag drop 託運。要在通關前換。",q:""},
   {t:"2026-11-19T15:15+08:00",hm:"15:15",i:"plane",n:"BR160 飛往仁川",ko:"",go:"桃園 T2 – 仁川 T1 · 2 小時 30 分",body:"波音 787-10。抵達時間 18:45（首爾）。",q:""},
   {t:"2026-11-19T18:45+09:00",hm:"18:45",i:"plane",n:"抵達仁川機場 第一航廈",ko:"인천국제공항 제1여객터미널",go:"入境、領行李",body:"e-Arrival Card 已提交，入境不用出示。打開 eSIM 行動數據，確認 Apple Wallet 的 T-money 有餘額，不夠就在 1 樓便利商店儲值。",q:"인천국제공항 제1여객터미널"},
   {t:"2026-11-19T20:00+09:00",hm:"20:00",i:"bus",n:"前往飯店",ko:"알로프트 서울 강남",go:"機場巴士或計程車 · 約 1 小時以上",body:"在 Naver Map 輸入飯店韓文名查路線。計程車可以直接出示住宿分頁的「給計程車司機看」。",q:"알로프트 서울 강남"},
   {t:"2026-11-19T21:30+09:00",hm:"21:30",i:"bed",n:"入住江南雅樂軒",ko:"알로프트 서울 강남",go:"出示護照 · 付房費 KRW 1,524,600",body:"確認編號 76431997。房費在飯店付，可能另收預授權。",q:"알로프트 서울 강남"},
   {t:"2026-11-19T22:00+09:00",hm:"22:00",i:"food",n:"宵夜：湯飯或便利商店",ko:"국밥",go:"飯店附近",body:"第一晚簡單吃，24 小時營業的湯飯店（국밥）很常見。",q:"국밥"}
  ]},
- {d:20,wd:"五",title:"聖水、廣藏市場、清溪川",tag:"美食 · 潮流 · 夜景",stops:[
-  {t:"2026-11-20T09:30+09:00",hm:"09:30",i:"cup",n:"聖水洞咖啡街",ko:"성수동 카페거리",go:chip(2,"2")+"聖水站",body:"舊工廠改建的咖啡廳與烘焙坊集中在這一帶。早點去比較不用排隊。",q:"성수동 카페거리"},
-  {t:"2026-11-20T11:00+09:00",hm:"11:00",i:"bag",n:"聖水洞選物店與快閃店",ko:"성수동 팝업스토어",go:"步行",body:"韓國設計品牌、香氛和快閃店很多，每週都在換。",q:"성수동"},
-  {t:"2026-11-20T12:30+09:00",hm:"12:30",i:"tree",n:"首爾林散步＋午餐",ko:"서울숲",go:chip("K","水仁盆唐")+"首爾林站",body:"秋末樹林很漂亮。附近的小巷有不少午餐小店。",q:"서울숲"},
-  {t:"2026-11-20T16:30+09:00",hm:"16:30",i:"food",n:"廣藏市場",ko:"광장시장",go:chip(1,"1")+"鍾路5街站",body:"必吃綠豆煎餅（빈대떡）、麻藥飯捲（마약김밥）、生拌牛肉（육회）。傍晚人最多。",q:"광장시장"},
-  {t:"2026-11-20T19:00+09:00",hm:"19:00",i:"moon",n:"清溪川夜間散步",ko:"청계천",go:"從市場往西步行 · 約 30–40 分",body:"沿著溪走到清溪廣場，夜間燈光很適合拍照。",q:"청계천"},
-  {t:"2026-11-20T21:00+09:00",hm:"21:00",i:"train",n:"回飯店",ko:"알로프트 서울 강남",go:"用 Naver Map 查最快路線",body:"",q:"알로프트 서울 강남"}
+ {d:20,wd:"五",title:"同學聚會、和女兒吃飯",tag:"同學 · 家人",stops:[
+  {t:"2026-11-20T10:30+09:00",hm:"10:30",i:"food",n:"和同學：廣藏市場早午餐",ko:"광장시장",go:chip(1,"1")+"鍾路5街站",body:"綠豆煎餅（빈대떡）、麻藥飯捲（마약김밥）、生拌牛肉（육회）。早點去人比較少。",q:"광장시장"},
+  {t:"2026-11-20T12:30+09:00",hm:"12:30",i:"walk",n:"清溪川散步到光化門",ko:"청계천",go:"從市場往西步行 · 約 40 分",body:"沿著溪走到清溪廣場，中途可以在鍾路一帶喝咖啡。",q:"청계천"},
+  {t:"2026-11-20T14:30+09:00",hm:"14:30",i:"bag",n:"東大門設計廣場 DDP 與周邊逛街",ko:"동대문디자인플라자",go:chip(2,"2")+chip(4,"4")+"東大門歷史文化公園站",body:"建築本身就很值得看，附近有服飾商場。",q:"동대문디자인플라자"},
+  {t:"2026-11-20T16:30+09:00",hm:"16:30",i:"bed",n:"回飯店休息、換衣服",ko:"알로프트 서울 강남",go:"用 Naver Map 查最快路線",body:"晚上要和女兒吃飯，先回飯店整理一下。",q:"알로프트 서울 강남"},
+  {t:"2026-11-20T18:00+09:00",hm:"18:00",i:"food",n:"和女兒吃飯",ko:"",go:"晚餐",body:"地點和時間出發前再約好。",q:""},
+  {t:"2026-11-20T21:00+09:00",hm:"21:00",i:"moon",n:"和同學續攤，或回飯店",ko:"",go:"看晚餐結束的時間",body:"",q:""}
  ]},
- {d:21,wd:"六",title:"望遠、延南、弘大",tag:"市場 · 漢江 · 購物",stops:[
+ {d:21,wd:"六",title:"望遠、延南、弘大",tag:"同學 · 市場 · 漢江",stops:[
   {t:"2026-11-21T10:00+09:00",hm:"10:00",i:"food",n:"望遠市場",ko:"망원시장",go:chip(6,"6")+"望遠站",body:"炸雞、可樂餅、韓式糕點，價格親民，週末人多。",q:"망원시장"},
   {t:"2026-11-21T12:00+09:00",hm:"12:00",i:"tree",n:"望遠漢江公園",ko:"망원한강공원",go:"從市場步行約 15 分",body:"漢江邊散步，便利商店有自煮拉麵機，可以體驗漢江拉麵。",q:"망원한강공원"},
   {t:"2026-11-21T14:00+09:00",hm:"14:00",i:"walk",n:"延南洞與京義線林道",ko:"연남동 경의선숲길",go:chip(2,"2")+chip("A","機場線")+"弘大入口站 3 號出口",body:"鐵道改建的綠色步道，兩旁是咖啡和小店。",q:"경의선숲길 연남동"},
@@ -441,7 +445,7 @@ const DAYS=[
   {t:"2026-11-21T18:30+09:00",hm:"18:30",i:"food",n:"晚餐：韓式烤肉",ko:"고기집",go:"弘大一帶",body:"一個人吃可以找有一人份（1인분）的店，或點部隊鍋、炸雞。",q:"홍대 고기집"},
   {t:"2026-11-21T20:30+09:00",hm:"20:30",i:"moon",n:"弘大夜晚街區，回飯店",ko:"알로프트 서울 강남",go:"地鐵或 Kakao T 叫車",body:"",q:"알로프트 서울 강남"}
  ]},
- {d:22,wd:"日",title:"COEX、漢南洞、明洞、南山",tag:"購物 · 夜景",stops:[
+ {d:22,wd:"日",title:"COEX、漢南洞、明洞、南山",tag:"同學 · 購物 · 夜景",stops:[
   {t:"2026-11-22T10:00+09:00",hm:"10:00",i:"bag",n:"COEX 星空圖書館",ko:"별마당 도서관",go:chip(2,"2")+"三成站 · 離飯店近",body:"巨型書牆是拍照點，COEX 商場順便逛。",q:"별마당 도서관"},
   {t:"2026-11-22T11:00+09:00",hm:"11:00",i:"tree",n:"奉恩寺",ko:"봉은사",go:chip(9,"9")+"奉恩寺站 · COEX 對面",body:"千年古剎就在高樓旁邊，短暫散步。",q:"봉은사"},
   {t:"2026-11-22T13:00+09:00",hm:"13:00",i:"cup",n:"漢南洞",ko:"한남동",go:chip(6,"6")+"漢江鎮站",body:"設計師品牌、選物店與咖啡廳，午餐在這裡吃。",q:"한남동"},
@@ -459,7 +463,7 @@ const DAYS=[
 const DEADLINES=[
  {t:"2026-11-18T23:59+09:00",lbl:"飯店取消截止",hm:"11/18 23:59",go:"首爾時間 · 免費取消到這刻，保留飯店就不用動作"},
  {t:"2026-11-19T11:00+08:00",lbl:"長榮網路報到",hm:"11/19 11:00",go:"出門前在手機上完成"},
- {t:"2026-11-19T12:15+08:00",lbl:"到桃園 T2 領韓元",hm:"11/19 12:15"},
+ {t:"2026-11-19T12:15+08:00",lbl:"到桃園 T2 換韓元",hm:"11/19 12:15"},
  {t:"2026-11-19T15:15+08:00",lbl:"BR160 起飛",hm:"11/19 15:15"},
  {t:"2026-11-23T06:30+09:00",lbl:"退房去機場",hm:"11/23 06:30"},
  {t:"2026-11-23T11:40+09:00",lbl:"BR169 起飛",hm:"11/23 11:40"}
@@ -473,7 +477,7 @@ const CHECKS=[
   ["hotel","確認保留飯店","免費取消到 11/18 23:59（首爾時間），不取消就不用動作。","11/18"],
   ["checkin","長榮網路報到與選位","Basic 票價選位要付費。","11/19"],
   ["earrival","填 e-Arrival Card","已提交，編號 EAC-26-PA-17398357，有效到 11/21 00:21（首爾）。入境時不用出示。",""],
-  ["krw","確認臺銀 T2 能否用護照領韓元","身分證遺失，打電話問機場分行。不行就到首爾再換。",""],
+  ["krw","臺銀網路預約若已送出，記得取消","改在桃園 T2 銀行櫃台現場換，帶護照即可（參考）。",""],
   ["idcard","（選）戶政事務所補辦身分證","本人帶 2 吋照片、印章或簽名。出國只需要護照。",""],
   ["esim","買 eSIM","已購買。抵達仁川後切換到韓國 eSIM 的行動數據。",""],
   ["insure","旅平險與不便險","",""],
@@ -488,7 +492,8 @@ const CHECKS=[
  {g:"出發當天（11/19）",items:[
   ["passport","護照帶在身上","",""],
   ["arrive","12:15 前到桃園第二航廈","","12:15"],
-  ["pickup","3 樓臺銀領韓元","第 8、9 號報到櫃台中間，要在通關前領。",""],
+  ["pickup","3 樓銀行櫃台換韓元","出境大廳現場換，帶護照，要在通關前換。建議 20–30 萬韓元。",""],
+  ["daughter","和女兒約好 11/20 晚餐的時間地點","",""],
   ["bagdrop","長榮 Bag drop 託運","1 件 23 公斤。",""]
  ]},
  {g:"在首爾",items:[
