@@ -59,6 +59,11 @@ button{font:inherit;color:inherit;cursor:pointer}
 .strip{padding-top:env(safe-area-inset-top)}
 .strip .wrap{display:flex;justify-content:space-between;align-items:center;min-height:32px;padding-top:6px;padding-bottom:6px;gap:12px;white-space:nowrap}
 .strip b{color:var(--sign);font-weight:700}
+.strip-r{display:flex;align-items:center;gap:10px}
+.sos-btn{display:inline-flex;align-items:center;gap:4px;border:0;background:var(--white);color:var(--ink);font:700 13px var(--sans);min-height:44px;margin:-6px 0;padding:0 10px}
+.sos-btn .icon{width:16px;height:16px}
+.sos-btn:active{background:var(--sign)}
+.strip :focus-visible{outline-color:var(--sign)}
 .band{position:sticky;top:env(safe-area-inset-top);z-index:20;background:var(--sign);border-bottom:3px solid var(--ink)}
 .band .wrap{display:grid;grid-template-columns:64px 1fr 48px;gap:16px;align-items:center;padding-top:16px;padding-bottom:16px}
 .pict{width:64px;height:64px;background:var(--ink);color:var(--white);display:grid;place-items:center}
@@ -190,6 +195,11 @@ dl.facts dd.code{font-family:var(--mono);font-size:17px;letter-spacing:.06em}
 .checks .t{font-weight:700;display:block}
 .checks .d{font-size:14px;color:var(--ink-3);display:block}
 .checks li.done .t{text-decoration:line-through;text-decoration-thickness:2px;color:var(--ink-3)}
+.donebox{margin-top:8px}
+.donebox summary{min-height:44px;display:flex;align-items:center;gap:8px;font-weight:700;color:var(--ink-2);cursor:pointer;list-style:none}
+.donebox summary::-webkit-details-marker{display:none}
+.donebox summary::before{content:"";width:8px;height:8px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(-45deg);transition:transform .2s cubic-bezier(.16,1,.3,1)}
+.donebox[open] summary::before{transform:rotate(45deg)}
 .checks .due{font:500 12px var(--mono);background:var(--sign);padding:0 4px;margin-left:6px;color:var(--ink)}
 
 /* converter */
@@ -276,7 +286,7 @@ dialog.taxi::backdrop{background:rgba(20,20,20,.6)}
   <symbol id="i-won" viewBox="0 0 24 24"><path d="M2.5 5h2.6l2.6 9.2L10.6 5h2.8l2.9 9.2L18.9 5h2.6l-4.2 14h-2.3L12 9.4 8.9 19H6.7z"/><rect x="1.5" y="9.2" width="21" height="1.8"/><rect x="1.5" y="12.6" width="21" height="1.8"/></symbol>
 </svg>
 
-<div class="strip"><div class="wrap"><span>首爾 <b>11/19–23</b></span><span id="phase">—</span></div></div>
+<div class="strip"><div class="wrap"><span>首爾 <b>11/19–23</b></span><span class="strip-r"><span id="phase">—</span><button type="button" class="sos-btn" id="sosBtn"><svg class="icon"><use href="#i-phone"/></svg>緊急電話</button></span></div></div>
 
 <header class="band" id="band">
   <div class="wrap">
@@ -420,7 +430,7 @@ dialog.taxi::backdrop{background:rgba(20,20,20,.6)}
     <li><div class="pict"><svg class="icon"><use href="#i-bag"/></svg></div><div><b>購物袋多半要錢</b><span>帶一個環保袋。退稅單據和護照放一起。</span></div></li>
   </ul>
 
-  <h2>緊急聯絡</h2>
+  <h2 id="sos">緊急聯絡</h2>
   <div class="sos">
     <a href="tel:112"><b>112</b><span>韓國報警</span></a>
     <a href="tel:119"><b>119</b><span>火警、救護車</span></a>
@@ -607,7 +617,7 @@ $("#bandGo").addEventListener("click",e=>{
   e.preventDefault();
   if(VIEWS.includes(href.slice(1))){showView(href.slice(1));window.scrollTo({top:0});return}const s=ALL.find(x=>"#"+x.id===href);if(!s)return;
   showView("trip");selectDay(s.day,false);
-  requestAnimationFrame(()=>{const el=document.getElementById(s.id);if(el){el.querySelector("details").open=true;el.scrollIntoView({behavior:"smooth",block:"start"})}});
+  setTimeout(()=>{const el=document.getElementById(s.id);if(el){el.querySelector("details").open=true;el.scrollIntoView({behavior:"smooth",block:"start"})}},0);
 });
 $("#unpin").addEventListener("click",()=>{pinned=null;store.set("pin",null);renderBand();toast("已改回自動")});
 
@@ -659,16 +669,26 @@ $("#flights").innerHTML=FLIGHTS.map(f=>`<div class="panel"><div class="head"><di
 /* Finished before publishing; a viewer's own ticks still override. */
 const PRESET_DONE={earrival:true,esim:true,tmoney:true,navermap:true};
 let done=Object.assign({},PRESET_DONE,store.get("checks",{}));
+/* Open items stay in view; finished ones fold into "已完成 n 項" per group. */
+const openDone=new Set();
+const checkLi=([id,t,d,due])=>{const on=!!done[id];
+  return `<li class="${on?"done":""}"><label><input type="checkbox" data-check="${id}" ${on?"checked":""}><span><span class="t">${t}${due?`<span class="due">${due}</span>`:""}</span>${d?`<span class="d">${d}</span>`:""}</span></label></li>`};
 function renderChecks(){
   let total=0,cnt=0;
-  $("#checkGroups").innerHTML=CHECKS.map(g=>`<h3>${g.g}</h3><ul class="checks">${[...g.items].sort((a,b)=>(!!done[a[0]])-(!!done[b[0]])).map(([id,t,d,due])=>{total++;const on=!!done[id];if(on)cnt++;
-    return `<li class="${on?"done":""}"><label><input type="checkbox" data-check="${id}" ${on?"checked":""}><span><span class="t">${t}${due?`<span class="due">${due}</span>`:""}</span>${d?`<span class="d">${d}</span>`:""}</span></label></li>`}).join("")}</ul>`).join("");
+  $("#checkGroups").innerHTML=CHECKS.map((g,gi)=>{
+    const open=g.items.filter(x=>!done[x[0]]),fin=g.items.filter(x=>done[x[0]]);
+    total+=g.items.length;cnt+=fin.length;
+    return `<h3>${g.g}</h3>`+
+      (open.length?`<ul class="checks">${open.map(checkLi).join("")}</ul>`:`<p class="note">這一組全部完成了。</p>`)+
+      (fin.length?`<details class="donebox" data-g="${gi}" ${openDone.has(gi)?"open":""}><summary>已完成 ${fin.length} 項</summary><ul class="checks">${fin.map(checkLi).join("")}</ul></details>`:"");
+  }).join("");
   $("#doneCount").textContent=cnt;$("#allCount").textContent=total;$("#meter").style.width=(cnt/total*100)+"%";
 }
+$("#checkGroups").addEventListener("toggle",e=>{const g=e.target.dataset&&e.target.dataset.g;if(g==null)return;e.target.open?openDone.add(+g):openDone.delete(+g)},true);
 $("#checkGroups").addEventListener("change",e=>{const id=e.target.dataset.check;if(!id)return;done[id]=e.target.checked;store.set("checks",done);
   e.target.closest("li").classList.toggle("done",e.target.checked);
-  const cnt=Object.values(done).filter(Boolean).length,total=CHECKS.reduce((a,g)=>a+g.items.length,0);
-  $("#doneCount").textContent=cnt;$("#meter").style.width=(cnt/total*100)+"%"});
+  /* Let the tick register visually, then move the item to its new group. */
+  setTimeout(()=>{renderChecks();const el=document.querySelector(`[data-check="${id}"]`);if(el&&el.offsetParent)el.focus({preventScroll:true})},350)});
 
 /* ---------- converter ---------- */
 const krw=$("#krw"),twd=$("#twd"),rate=$("#rate");
@@ -701,6 +721,9 @@ function showView(v,push){
   if(push!==false)history.replaceState(null,"","#"+v);
 }
 document.querySelector(".nav").addEventListener("click",e=>{const b=e.target.closest("button[data-view]");if(!b)return;showView(b.dataset.view);window.scrollTo({top:0})});
+
+/* Emergency numbers reachable from every view. */
+$("#sosBtn").addEventListener("click",()=>{showView("money");setTimeout(()=>{const h=$("#sos");h.setAttribute("tabindex","-1");h.scrollIntoView({block:"start"});h.focus({preventScroll:true})},0)});
 
 /* ---------- iPhone: home-screen hint + offline ---------- */
 const isIOS=/iPhone|iPad|iPod/.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
